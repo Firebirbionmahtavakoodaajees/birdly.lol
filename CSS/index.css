@@ -1,23 +1,42 @@
 *{
     margin: 0;
-    
     padding: 0;
-    
     box-sizing: border-box;
-    }
+}
 
 
 html {
     height: 100%;
-    }
-    body {
+}
+
+body {
     min-height: 100%;
-    }
+}
+
+.body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+
+    min-height: 100dvh;
+}
 
 .WelcomeButton {
     display: flex;
     justify-content: center;
     align-items: center;
+    
     font-family: "Lexend";
-    font-weight: 450;
-    }
+    font-weight: 600;
+    font-size: 85px;
+    
+    width: 50dvw;
+    height: 50dvh;
+    margin-top: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
