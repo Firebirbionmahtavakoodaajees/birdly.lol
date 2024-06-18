@@ -1,3 +1,7 @@
 .WelcomeButton {
-    background-color: #7771EF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Lexend";
+    font-weight: 450;
 }
