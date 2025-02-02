@@ -5,16 +5,19 @@
 }
 
 
-html {
-}
+html {}
 
 body {
     min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
 
     margin: 0;
     padding: 0;
-    background-color: #2a2a3a; /* Dark grey with a slight purple hue */
-    color: #ffe5e5; /* Red-hued white text */
+    background-color: #2a2a3a;
+    /* Dark grey with a slight purple hue */
+    color: #ffe5e5;
+    /* Red-hued white text */
     font-family: Arial, sans-serif;
 }
 
@@ -26,33 +29,78 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #1a1a2e; /* Dark blue hue */
+    background-color: #1a1a2e;
+    /* Dark blue hue */
     padding: 10px 20px;
-    border-radius: 2px; /* Outer rounding */
-    margin: 4px; /* Floating margin */
+    border-radius: 2px;
+    /* Outer rounding */
+    margin: 4px;
+    /* Floating margin */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
+}
 
-  /* Navbar buttons styling */
-  .navbar-buttons {
+/* Navbar buttons styling */
+.navbar-buttons {
     display: flex;
-    gap: 20px; /* Space between buttons */
-  }
+    gap: 20px;
+    /* Space between buttons */
+}
 
-  .navbar-buttons a {
-    color: #ffe5e5; /* Red-hued white text */
+.navbar-buttons a {
+    color: #ffe5e5;
+    /* Red-hued white text */
     text-decoration: none;
     font-size: 16px;
     transition: color 0.3s ease;
-  }
+}
 
-  .navbar-buttons a:hover {
-    color: #ff7f7f; /* Lighter red on hover */
-  }
+.navbar-buttons a:hover {
+    color: #ff7f7f;
+    /* Lighter red on hover */
+}
 
-  /* Logo placeholder styling */
-  .logo {
+/* Logo placeholder styling */
+.logo {
     font-size: 24px;
     font-weight: bold;
+    color: #ffe5e5;
+    /* Red-hued white text */
+}
+
+.Main {
+    /*Take up remaining space*/
+    flex: 1;
+    /* Margin from edges */
+    margin: 4px;
+    margin-top: 8px;
+    /* Outer rounding */
+    border-radius: 2px;
+    
+    /*Center*/
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+
+}
+.Start {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.Start {
+    background-color: #FF6F61; /* Coral pink accent color */
     color: #ffe5e5; /* Red-hued white text */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .Start:hover {
+    background-color: #ff4a3a; /* Darker coral pink on hover */
   }
