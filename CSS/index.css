@@ -10,10 +10,6 @@ html {
 }
 
 body {
-    min-height: 100%;
-}
-
-.body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,23 +29,21 @@ body {
     padding: 15px 20px;
     position: relative;
 }
-
 .navbar a {
     color: white;
     text-decoration: none;
     padding: 10px 15px;
 }
-
 .navbar a:hover {
     background-color: #555;
     border-radius: 5px;
 }
-
 .nav-links {
-    display: absolute;
+    display: flex;
     gap: 15px;
+    position: absolute;
+    left: 20px;
 }
-
 .logo {
     font-size: 1.5em;
     font-weight: bold;
