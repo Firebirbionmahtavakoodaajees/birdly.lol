@@ -37,6 +37,20 @@ body {
     border-bottom: 1px solid #333; /* Add a subtle border */
 }
 
+/* Navbar Styles */
+.navbar {
+    background-color: #1f1f1f;
+    padding: 1rem 0;
+    position: sticky;
+    top: 4px; /* 4px margin from the top */
+    z-index: 1000;
+    border-radius: 2px; /* 2px rounding */
+    margin: 0 auto; /* Center the navbar horizontally */
+    width: calc(100% - 8px); /* Adjust width to account for the 4px margin on both sides */
+    max-width: 1200px; /* Optional: Set a max-width for larger screens */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Optional: Add a subtle shadow for the floating effect */
+}
+
 .navbar ul {
     list-style: none;
     margin: 0;
@@ -46,20 +60,21 @@ body {
 }
 
 .navbar ul li {
-    margin: 0 1.5rem; /* Increase spacing between links */
+    margin: 0 1.5rem;
 }
 
 .navbar ul li a {
     color: #e0e0e0;
     text-decoration: none;
     font-size: 1.1rem;
-    transition: color 0.3s ease;
-    padding: 0.5rem 0; /* Add padding for better click area */
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
 }
 
 .navbar ul li a:hover {
     color: #ffffff;
-    border-bottom: 2px solid #ffffff; /* Add a hover effect */
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background on hover */
+    border-radius: 2px; /* Match the navbar's rounding */
 }
 
 /* Section Styles */
