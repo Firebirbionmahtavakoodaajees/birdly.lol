@@ -49,6 +49,8 @@ body {
     width: calc(100% - 8px); /* Adjust width to account for the 4px margin on both sides */
     max-width: 1200px; /* Optional: Set a max-width for larger screens */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Optional: Add a subtle shadow for the floating effect */
+    background-color: red;
+
 }
 
 .navbar ul {
