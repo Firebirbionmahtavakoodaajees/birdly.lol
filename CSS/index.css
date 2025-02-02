@@ -27,12 +27,14 @@ body {
 }
 
 /* Navbar Styles */
+/* Navbar Styles */
 .navbar {
     background-color: #1f1f1f;
     padding: 1rem 0;
     position: sticky;
     top: 0;
     z-index: 1000;
+    border-bottom: 1px solid #333; /* Add a subtle border */
 }
 
 .navbar ul {
@@ -44,7 +46,7 @@ body {
 }
 
 .navbar ul li {
-    margin: 0 1rem;
+    margin: 0 1.5rem; /* Increase spacing between links */
 }
 
 .navbar ul li a {
@@ -52,10 +54,12 @@ body {
     text-decoration: none;
     font-size: 1.1rem;
     transition: color 0.3s ease;
+    padding: 0.5rem 0; /* Add padding for better click area */
 }
 
 .navbar ul li a:hover {
     color: #ffffff;
+    border-bottom: 2px solid #ffffff; /* Add a hover effect */
 }
 
 /* Section Styles */
