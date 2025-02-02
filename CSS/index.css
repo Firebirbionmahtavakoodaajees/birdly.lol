@@ -7,6 +7,10 @@
 
 html {}
 
+*{
+    font-family: Lexend;
+}
+
 body {
     min-height: 100dvh;
     display: flex;
@@ -18,7 +22,6 @@ body {
     /* Dark grey with a slight purple hue */
     color: #ffe5e5;
     /* Red-hued white text */
-    font-family: Arial, sans-serif;
 }
 
 .navbar {
@@ -103,4 +106,12 @@ body {
 
   .Start:hover {
     background-color: #ff4a3a; /* Darker coral pink on hover */
+  }
+
+  @font-face {
+    font-family: 'Lexend'; /* Give your font a name */
+    src: url('Assets/Lexend-VariableFont_wght.ttf') format('truetype'); /* Path to your font file */
+    /* Add additional formats if you have them (e.g., .woff, .woff2) */
+    font-weight: 900; /* Specify the weight if needed */
+    font-style: normal; /* Specify the style if needed */
   }
