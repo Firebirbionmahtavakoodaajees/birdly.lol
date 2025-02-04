@@ -105,13 +105,13 @@ body {
     justify-content: center;
 }
 
+.Button:hover {
+    background-color: #ff4a3a; /* Darker coral pink on hover */
+  }
+
 .Title {
     font-size: 100px;
 }
-
-  .Start:hover {
-    background-color: #ff4a3a; /* Darker coral pink on hover */
-  }
 
   @font-face {
     font-family: 'Lexend'; /* Give your font a name */
