@@ -84,12 +84,8 @@ body {
     justify-content: center; 
     align-items: center; 
 
-}
-.Start {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    flex-direction: column;
+    gap: 8px;
 }
 
 .Start {
@@ -102,7 +98,15 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Title {
+    font-size: 100px;
+}
 
   .Start:hover {
     background-color: #ff4a3a; /* Darker coral pink on hover */
