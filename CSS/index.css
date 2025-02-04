@@ -88,7 +88,7 @@ body {
     gap: 8px;
 }
 
-.Start {
+.Button {
     background-color: #FF6F61; /* Coral pink accent color */
     color: #ffe5e5; /* Red-hued white text */
     border: none;
@@ -98,6 +98,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
 
     display: flex;
     align-items: center;
