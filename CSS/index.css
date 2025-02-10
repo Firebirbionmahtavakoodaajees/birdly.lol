@@ -75,7 +75,7 @@ body {
     flex: 1;
     /* Margin from edges */
     margin: 4px;
-    margin-top: 8px;
+    margin-top: 2dvh;
     /* Outer rounding */
     border-radius: 2px;
     
@@ -88,25 +88,30 @@ body {
     gap: 8px;
 
     position: relative;
+    max-height: 90dvh;
 }
 
 .framed-image {
-    display: inline-block; /* Keeps the image inline with other content */
-    padding: 2px; /* Padding around the image to give space for the frame */
-    background-color: #fff; /* Background color of the frame */
-    border: 4px solid #333; /* The color and thickness of the frame border */
+    display: flex; /* Use flex to center the image inside the frame */
+    justify-content: center; /* Centers the image horizontally */
+    align-items: center; /* Centers the image vertically */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional shadow effect for a 3D look */
-    position: absolute; /* Positions the image absolutely within the parent */
+    position: relative; /* Relative positioning for flexible layout */
     z-index: -1;        /* Places the image behind other components */
-    width: 95%; /* Sets the width to 90% of the parent div */
-    height: 95%; /* Sets the height to 90% of the parent div */
-    object-fit: cover;
+    width: 98%;
+    overflow: hidden;
+
+    background-color: #f0f0f0; /* Optional: to give the frame a background color */
+    display: flex;
+    object-fit: contain;
+    
   }
   
   .framed-image img {
     max-width: 100%; /* Ensure image scales with the container */
-    height: auto; /* Maintain aspect ratio */
+    max-width: 100%;
     display: block; /* Remove bottom space below the image */
+    object-fit: contain;
   }
 
   .framed-image::before {
@@ -119,6 +124,18 @@ body {
     background: rgba(0, 0, 0, 0.5); /* Adjust the alpha value to control darkness */
     pointer-events: none; /* Ensures the overlay doesn't interfere with other elements */
   }
+
+.Title {
+    font-size: 7dvh;
+    text-align: center;
+
+    position: absolute; /* Positions the text relative to the frame */
+    top: 50%; /* Centers the text vertically */
+    left: 50%; /* Centers the text horizontally */
+    transform: translate(-50%, -50%); /* Corrects the position by adjusting it by 50% of its size */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Optional: Adds shadow to make the text stand out */
+    text-align: center; /* Ensures the text is centered */
+}
 
 .Button {
     background-color: #FF6F61; /* Coral pink accent color */
@@ -136,16 +153,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    position: absolute; /* Positions the text relative to the frame */
+    top: 55%; /* Centers the text vertically */
+    left: 50%; /* Centers the text horizontally */
+    transform: translate(-50%, -50%); /* Corrects the position by adjusting it by 50% of its size */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Optional: Adds shadow to make the text stand out */
+    text-align: center; /* Ensures the text is centered */
 }
 
 .Button:hover {
     background-color: #ff4a3a; /* Darker coral pink on hover */
   }
-
-.Title {
-    font-size: 7dvh;
-    text-align: center;
-}
 
   @font-face {
     font-family: 'Lexend'; /* Give your font a name */
