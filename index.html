@@ -5,6 +5,22 @@
 <!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
 
+<script src="JS\index.js" defer>
+    //use async for faster loading but load code in no order
+    //use defer to load code in order
+
+    // Function to detect mobile devices
+    function isMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent);
+    }
+
+    // Redirect mobile users
+    if (isMobileDevice()) {
+        window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'; // Replace with your mobile URL
+    }
+
+</script>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -48,21 +64,6 @@
 
     <!--#FF6F61-->
 
-    <script src="JS\index.js" defer>
-        //use async for faster loading but load code in no order
-        //use defer to load code in order
-
-        // Function to detect mobile devices
-        function isMobileDevice() {
-            return /Mobi|Android/i.test(navigator.userAgent);
-        }
-
-        // Redirect mobile users
-        if (isMobileDevice()) {
-            window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'; // Replace with your mobile URL
-        }
-
-    </script>
 </body>
 
 </html>
