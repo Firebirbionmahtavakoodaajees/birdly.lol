@@ -144,6 +144,7 @@ body {
 
 .Title {
     font-size: 8dvh;
+    text-align: center;
 }
 
   @font-face {
