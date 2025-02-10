@@ -86,7 +86,39 @@ body {
 
     flex-direction: column;
     gap: 8px;
+
+    position: relative;
 }
+
+.framed-image {
+    display: inline-block; /* Keeps the image inline with other content */
+    padding: 2px; /* Padding around the image to give space for the frame */
+    background-color: #fff; /* Background color of the frame */
+    border: 4px solid #333; /* The color and thickness of the frame border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional shadow effect for a 3D look */
+    position: absolute; /* Positions the image absolutely within the parent */
+    z-index: -1;        /* Places the image behind other components */
+    width: 90%; /* Sets the width to 90% of the parent div */
+    height: 90%; /* Sets the height to 90% of the parent div */
+    object-fit: cover;
+  }
+  
+  .framed-image img {
+    max-width: 100%; /* Ensure image scales with the container */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove bottom space below the image */
+  }
+
+  .framed-image::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Adjust the alpha value to control darkness */
+    pointer-events: none; /* Ensures the overlay doesn't interfere with other elements */
+  }
 
 .Button {
     background-color: #FF6F61; /* Coral pink accent color */
@@ -99,6 +131,7 @@ body {
     transition: background-color 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     text-decoration: none;
+    margin-top: 25px;
 
     display: flex;
     align-items: center;
