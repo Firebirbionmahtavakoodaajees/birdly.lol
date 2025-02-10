@@ -98,8 +98,8 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional shadow effect for a 3D look */
     position: absolute; /* Positions the image absolutely within the parent */
     z-index: -1;        /* Places the image behind other components */
-    width: 90%; /* Sets the width to 90% of the parent div */
-    height: 90%; /* Sets the height to 90% of the parent div */
+    width: 95%; /* Sets the width to 90% of the parent div */
+    height: 95%; /* Sets the height to 90% of the parent div */
     object-fit: cover;
   }
   
