@@ -2,14 +2,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Lexend;
 }
 
 
 html {}
-
-*{
-    font-family: Lexend;
-}
 
 body {
     min-height: 100dvh;
