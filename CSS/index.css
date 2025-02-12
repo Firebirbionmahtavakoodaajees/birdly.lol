@@ -59,6 +59,10 @@ body {
     /* Lighter red on hover */
 }
 
+.valokuvaajat-fi-button {
+    size: 50%;
+}
+
 /* Logo placeholder styling */
 .logo {
     font-size: 24px;
