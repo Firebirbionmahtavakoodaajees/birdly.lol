@@ -37,7 +37,7 @@ body {
     margin: 4px;
     /* Floating margin */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    max-height: 5dvh;
+    max-height: 10dvh;
 }
 
 /* Navbar buttons styling */
