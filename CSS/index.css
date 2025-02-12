@@ -173,6 +173,7 @@ body {
     background-color: #ff4a3a; /* Darker coral pink on hover */
   }
 
+
   @font-face {
     font-family: 'Lexend'; /* Give your font a name */
     src: url('Assets/Lexend-VariableFont_wght.ttf') format('truetype'); /* Path to your font file */
@@ -193,6 +194,7 @@ body {
   align-items: center;
   position: relative;
   overflow: hidden;
+	text-decoration: none;
 }
 
 .card {
