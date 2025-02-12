@@ -195,6 +195,11 @@ body {
   position: relative;
   overflow: hidden;
   text-decoration: none;
+
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 80%;
 }
 
 .card {
@@ -243,8 +248,8 @@ body {
     #5c9df1 100%
   );
   mix-blend-mode: color-dodge;
-  -webkit-animation: move 25s infinite alternate;
-          animation: move 25s infinite alternate;
+  -webkit-animation: move 15s infinite alternate;
+          animation: move 15s infinite alternate;
   transition: 1s cubic-bezier(0.07, 0.8, 0.16, 1);
 }
 
@@ -282,3 +287,4 @@ body {
     transform: translate(500px, 100px) rotate(-10deg);
     border-radius: 76% 24% 33% 67% / 68% 55% 45% 32%;
   }
+}
