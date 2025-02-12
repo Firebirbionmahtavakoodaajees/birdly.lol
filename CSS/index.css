@@ -184,6 +184,59 @@ body {
 
 
 /*Collections*/
+/* Button Container */
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  max-width: 800px;
+  padding: 20px;
+}
+
+/* Button Styles */
+.button-container button {
+  background-color: #FF6F61; /* Accent color */
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Hover Effect */
+.button-container button:hover {
+  background-color: #e65a50; /* Slightly darker shade of accent color */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Active Effect */
+.button-container button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .button-container {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .button-container button {
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 14px;
+  }
+}
+
 
 /*Wanhat*/
 .container {
