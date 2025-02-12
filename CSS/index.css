@@ -64,6 +64,7 @@ body {
     transform: scale(0.6); /* Scale down to 80% of original size */
     display: inline-block; /* Ensures transform works correctly */
     top: 10%;
+    left: 25%
 }
 
 /* Logo placeholder styling */
