@@ -60,7 +60,8 @@ body {
 }
 
 .valokuvaajat-fi-button {
-    max-height: 5%
+    transform: scale(0.8); /* Scale down to 80% of original size */
+    display: inline-block; /* Ensures transform works correctly */
 }
 
 /* Logo placeholder styling */
