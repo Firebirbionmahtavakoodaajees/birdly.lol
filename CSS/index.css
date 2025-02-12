@@ -37,7 +37,7 @@ body {
     margin: 4px;
     /* Floating margin */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    max-height: 10dvh;
+    max-height: 7dvh;
 }
 
 /* Navbar buttons styling */
@@ -61,7 +61,7 @@ body {
 }
 
 .valokuvaajat-fi-button {
-    transform: scale(0.5); /* Scale down to 80% of original size */
+    transform: scale(0.7); /* Scale down to 80% of original size */
     display: inline-block; /* Ensures transform works correctly */
 }
 
