@@ -60,7 +60,7 @@ body {
 }
 
 .valokuvaajat-fi-button {
-    size: 50%;
+    max-height: 5%
 }
 
 /* Logo placeholder styling */
