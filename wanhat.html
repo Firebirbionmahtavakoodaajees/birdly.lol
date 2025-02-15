@@ -8,18 +8,43 @@
 <script src="JS\index.js" defer>
     //use async for faster loading but load code in no order
     //use defer to load code in order
-
-    // Function to detect mobile devices
-    function isMobileDevice() {
-        return /Mobi|Android/i.test(navigator.userAgent);
-    }
-
-    // Redirect mobile users
-    if (isMobileDevice()) {
-        window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'; // Replace with your mobile URL
-    }
-
 </script>
+
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  transition: all 0.5s ease-in-out;
+}
+
+.default-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.image-bg {
+  background-size: cover;
+  background-position: center;
+  filter: blur(3px) brightness(0.6);
+  opacity: 0;
+}
+    
+.card {
+  cursor: pointer;
+}
+</style>
 
 <head>
     <meta charset="utf-8">
@@ -48,11 +73,15 @@
             <a href="about.html">About</a>
             <a href="collections.html">Collections</a>
         </div>
-        <!-- Logo placeholder -->
-        <div class="logo">B</div>
     </div>
 
     <div class="Main">
+
+          <!-- Background elements -->
+       <div class="background default-bg"></div>
+       <div class="background image-bg" id="bg1"></div>
+       <div class="background image-bg" id="bg2"></div>
+        
         <!-- 
         <div class="button-container">
             <button onclick="window.location.href='https://birdly.pixieset.com/wanhattanssit/';">Instagram</button>
@@ -66,27 +95,33 @@
         -->        
             
         <div class="container">
-            <div class="card">
+            <div class="card" onmouseenter="showBg('bg1', 'url("Assets/monkey.jpg")')" 
+         onmouseleave="hideBgs()">
                 <h3 class="card-title">Instagram</h3>
                 <a href="https://birdly.pixieset.com/wanhattanssit/" class="card-btn">Visit</a>
             </div>
-            <div class="card">
+            <div class="card" onmouseenter="showBg('bg2', 'url('image2.jpg')')" 
+         onmouseleave="hideBgs()">
                 <h3 class="card-title">Highlights</h3>
                 <a href="highlights.html" class="card-btn">Visit</a>
             </div>
-            <div class="card">
+            <div class="card" onmouseenter="showBg('bg3', 'url('image3.jpg')')" 
+         onmouseleave="hideBgs()">
                 <h3 class="card-title">Batch 1</h3>
                 <a href="https://birdly.pixieset.com/wanhattanssitbatch1/" class="card-btn">Visit</a>
             </div>
-            <div class="card">
+            <div class="card" onmouseenter="showBg('bg4', 'url('image4.jpg')')" 
+         onmouseleave="hideBgs()">
                 <h3 class="card-title">Batch 2</h3>
                 <a href='https://birdly.pixieset.com/wanhattanssitbatch2/' class="card-btn">Visit</a>
             </div>
-            <div class="card">
+            <div class="card" onmouseenter="showBg('bg5', 'url('image5.jpg')')" 
+         onmouseleave="hideBgs()">
                 <h3 class="card-title">Batch 3</h3>
                 <a href='example.com' class="card-btn">Visit</a>
             </div>
-            <div class="card">
+            <div class="card" onmouseenter="showBg('bg6', 'url('image6.jpg')')" 
+         onmouseleave="hideBgs()">
                 <h3 class="card-title">Videos</h3>
                 <a href='example.com' class="card-btn">Visit</a>
             </div>
