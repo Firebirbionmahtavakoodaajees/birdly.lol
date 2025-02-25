@@ -20,6 +20,10 @@ body {
     /* Dark grey with a slight purple hue */
     color: #ffe5e5;
     /* Red-hued white text */
+    background: #654ea3;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #eaafc8, #654ea3);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #eaafc8, #654ea3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 .navbar {
@@ -95,42 +99,51 @@ body {
 
     position: relative;
     max-height: 90dvh;
-
 }
 
-.framed-image {
-    display: flex; /* Use flex to center the image inside the frame */
-    justify-content: center; /* Centers the image horizontally */
-    align-items: center; /* Centers the image vertically */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional shadow effect for a 3D look */
-    position: relative; /* Relative positioning for flexible layout */
-    z-index: -1;        /* Places the image behind other components */
-    width: 98%;
-    overflow: hidden;
+.blob {
+  position: absolute;
+  opacity: 0.5;
+  width: 75dvh;
+  aspect-ratio: 1/1;
 
-    background-color: #f0f0f0; /* Optional: to give the frame a background color */
-    display: flex;
-    object-fit: contain;
-    
-  }
-  
-  .framed-image img {
-    max-width: 100%; /* Ensure image scales with the container */
-    max-width: 100%;
-    display: block; /* Remove bottom space below the image */
-    object-fit: contain;
-  }
+  top: 30%;
+  left: 30%;
+  transform: translate(-30%, -30%);
 
-  .framed-image::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* Adjust the alpha value to control darkness */
-    pointer-events: none; /* Ensures the overlay doesn't interfere with other elements */
+
+  animation: blob-animation 10s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite
+    alternate forwards;
+  filter: blur(64px);
+  z-index: -5;
+  background: linear-gradient(
+    47deg,
+    rgba(255, 88, 139, 1) 21%,
+    rgb(0 164 173) 67%,
+    rgba(118, 74, 166, 1) 81%
+  );
+   box-shadow: inset 50px 50px 17px 0px #ff588b,
+   inset 100px 100px 17px 0px #66319f;
+}
+
+@keyframes blob-animation {
+  0% {
+    translate: 40% -25%;
+    border-radius: 60% 40% 30% 70% / 100% 85% 92% 74%;
   }
+  50% {
+    translate: 0% 13%;
+    border-radius: 20% 71% 47% 70% / 81% 15% 22% 54%;
+    rotate: 41deg;
+    scale: 1.15;
+  }
+  100% {
+    translate: -45% 39%;
+    border-radius: 100% 75% 92% 74% / 60% 80% 30% 70%;
+    rotate: -60deg;
+    scale: 1.05;
+  }
+}
 
 .Title {
     font-size: 7dvh;
