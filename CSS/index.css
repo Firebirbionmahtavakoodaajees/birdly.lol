@@ -28,20 +28,17 @@ body {
 
 .navbar {
     position: sticky;
-    top: 4px;
-    left: 4px;
-    right: 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #1a1a2e;
-    /* Dark blue hue */
-    padding: 10px 20px;
+    background: #654ea3;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #f5d3e0, #b8a1d6);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #eaafc8, #654ea3);
+    padding: 25px 20px;
     border-radius: 2px;
     /* Outer rounding */
-    margin: 4px;
     /* Floating margin */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     max-height: 7dvh;
 }
 
@@ -53,7 +50,7 @@ body {
 }
 
 .navbar-buttons a {
-    color: #ffe5e5;
+    color: #333333;
     /* Red-hued white text */
     text-decoration: none;
     font-size: 16px;
@@ -65,18 +62,11 @@ body {
     /* Lighter red on hover */
 }
 
-.valokuvaajat-fi-button {
-    transform: scale(0.6); /* Scale down to 80% of original size */
-    display: inline-block; /* Ensures transform works correctly */
-    top: 25%;
-    left: 25%;
-}
-
 /* Logo placeholder styling */
 .logo {
     font-size: 24px;
     font-weight: bold;
-    color: #ffe5e5;
+    color: #cdcdcd;
     /* Red-hued white text */
 }
 
@@ -99,6 +89,14 @@ body {
 
     position: relative;
     max-height: 90dvh;
+}
+
+
+
+
+/* Class to trigger the animation */
+.blob-animate {
+  animation: blobAnimation 1s forwards;
 }
 
 .blob {

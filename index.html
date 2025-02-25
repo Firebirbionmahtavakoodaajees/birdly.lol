@@ -5,21 +5,9 @@
 <!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
 
-<script src="JS\index.js" defer>
-    //use async for faster loading but load code in no order
-    //use defer to load code in order
 
-    // Function to detect mobile devices
-    function isMobileDevice() {
-        return /Mobi|Android/i.test(navigator.userAgent);
-    }
 
-    // Redirect mobile users
-    if (isMobileDevice()) {
-        window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'; // Replace with your mobile URL
-    }
 
-</script>
 
 <head>
     <meta charset="utf-8">
@@ -37,7 +25,6 @@
 </head>
 
 <body>
-
 
     <!-- Navbar -->
     <div class="navbar">
@@ -59,12 +46,15 @@
         </div>
 
         <div class="Title">Unleash the creativity</div>
-        <a class="Button" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Start</a>
-
+        <div class="start-button-container">
+            <div id="start-button-blob"></div>
+        </div>
     </div>
 
-    <div class="blob">
-    </div>
+    <script src="JS\index.js" defer>
+        //use async for faster loading but load code in no order
+        //use defer to load code in order
+    </script>
 
     <!--#FF6F61-->
 
