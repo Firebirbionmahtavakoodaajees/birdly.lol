@@ -151,7 +151,7 @@ body {
     top: 50%; /* Centers the text vertically */
     left: 50%; /* Centers the text horizontally */
     transform: translate(-50%, -50%); /* Corrects the position by adjusting it by 50% of its size */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Optional: Adds shadow to make the text stand out */
+    text-shadow: 2px 2px 16px rgba(0, 0, 0, 0.4); /* Optional: Adds shadow to make the text stand out */
     text-align: center; /* Ensures the text is centered */
 }
 
