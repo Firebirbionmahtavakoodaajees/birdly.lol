@@ -1,7 +1,5 @@
 {
-    "version": 2,
-    "buildCommand": "npm run build",
-    "outputDirectory": "build",
+    "version": 1,
     "cleanUrls": true,
     "rewrites": [
       { "source": "/api/(.*)", "destination": "/api/index.js" },
