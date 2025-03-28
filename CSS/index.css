@@ -67,6 +67,7 @@ body {
 
 .Main {
     /*Take up remaining space*/
+    display: flex;
     flex: 1;
     /* Margin from edges */
     margin: 4px;
@@ -86,8 +87,14 @@ body {
     max-height: 90dvh;
 }
 
-
-
+.main-text {
+    background-color: #FFF599;
+    color: #4d4d4d;
+    flex: 1 1;
+    text-shadow: 2px 2px 16px rgba(0, 0, 0, 0.4);
+    font-size: 15dvh;
+    font-weight: 900;
+}
 
 /* Class to trigger the animation */
 .blob-animate {
