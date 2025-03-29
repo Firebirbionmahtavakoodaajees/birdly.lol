@@ -67,7 +67,6 @@ body {
 
 .Main {
     /*Take up remaining space*/
-    display: flex;
     flex: 1;
     /* Margin from edges */
     margin: 4px;
@@ -80,8 +79,9 @@ body {
     justify-content: center; 
     align-items: center; 
 
+    /*Felxbox*/
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
 
     position: relative;
     max-height: 90dvh;
@@ -148,43 +148,59 @@ body {
 .Title {
     font-size: 7dvh;
     text-align: center;
-
-    position: absolute; /* Positions the text relative to the frame */
-    top: 50%; /* Centers the text vertically */
-    left: 50%; /* Centers the text horizontally */
-    transform: translate(-50%, -50%); /* Corrects the position by adjusting it by 50% of its size */
     text-shadow: 2px 2px 16px rgba(0, 0, 0, 0.4); /* Optional: Adds shadow to make the text stand out */
-    text-align: center; /* Ensures the text is centered */
+    z-index: -11;
 }
 
-.Button {
-    background-color: #FF6F61; /* Coral pink accent color */
-    color: #ffe5e5; /* Red-hued white text */
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 2px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    text-decoration: none;
-    margin-top: 25px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    position: absolute; /* Positions the text relative to the frame */
-    top: 55%; /* Centers the text vertically */
-    left: 50%; /* Centers the text horizontally */
-    transform: translate(-50%, -50%); /* Corrects the position by adjusting it by 50% of its size */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Optional: Adds shadow to make the text stand out */
-    text-align: center; /* Ensures the text is centered */
+    /* Styling for the round button */
+.round-button {
+      z-index: 1;
+      background-color: #7867f8; 
+      color: white; /* White text */
+      border: none; /* No border */
+      border-radius: 50%; /* Makes the button circular */
+      width: 100px; /* Width of the button */
+      height: 100px; /* Height of the button */
+      text-align: center; /* Center text alignment */
+      font-size: 16px; /* Font size */
+      cursor: pointer; /* Pointer cursor on hover */
 }
 
-.Button:hover {
-    background-color: #ff4a3a; /* Darker coral pink on hover */
-  }
+@keyframes morph-to-droplet {
+  0% {}
+  80% { transform: translate(-50%, calc(100vh - 150px)) scale(0.8); }
+  100% { transform: translate(-50%, calc(100vh - 120px)) scale(0); }
+}
+
+.animate-droplet {
+  animation: morph-to-droplet 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.water {
+  position: absolute; /* Position the div relative to its parent */
+  bottom: 0; /* Align it to the bottom of the parent container */
+  opacity: 0;
+}
+
+@keyframes waterAnim {
+  0% {transform: translate(0,100dvh);}
+  100% {transform: translate(0,-100dvh);}
+}
+
+.after-wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  background-color: #7867f8;
+  opacity: 0;
+}
+
+@keyframes waveAnim {
+  0% {transform: translate(0,200dvh);}
+  100% {transform: translate(0dvh);}
+}
 
 
   @font-face {

@@ -1,33 +1,26 @@
-const button = document.querySelector('.animated-button');
+function buttonClicked() {
+    const button = document.querySelector('.round-button');
+    button.classList.add('animate-droplet');
 
-        button.addEventListener('mouseenter', () => {
-            gsap.to(button, {
-                scale: 1.1,
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        });
+    setTimeout(waterWave, 5)
+    afterWave();
 
-        button.addEventListener('mouseleave', () => {
-            gsap.to(button, {
-                scale: 1,
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        });
+    setTimeout(redirect, 1000)
 
-        button.addEventListener('click', () => {
-            gsap.to(button, {
-                scale: 0.9,
-                duration: 0.1,
-                ease: 'power2.out',
-                yoyo: true,
-                repeat: 1
-            });
 
-            gsap.to(button, {
-                rotationY: 360,
-                duration: 0.5,
-                ease: 'power2.inOut'
-            });
-        });
+    function waterWave() {
+        document.querySelector('.water').style.setProperty('opacity', '1');
+        document.querySelector('.water').style.setProperty('animation', 'waterAnim 1s linear forwards');
+    }
+
+    function afterWave() {
+        document.querySelector('.after-wave').style.setProperty('opacity', '1');
+        document.querySelector('.after-wave').style.setProperty('animation', 'waveAnim 1s linear forwards');
+    }
+
+    function redirect() {
+        window.location.href = 'collections.html';
+    }
+
+    
+}
