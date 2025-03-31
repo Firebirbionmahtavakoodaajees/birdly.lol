@@ -24,3 +24,7 @@ function buttonClicked() {
 
     
 }
+
+function pageLoaded() {
+    console.log("Lol")
+}

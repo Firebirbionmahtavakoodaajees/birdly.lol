@@ -182,6 +182,12 @@ body {
   opacity: 0;
 }
 
+.loaded-water {
+  position: absolute; /* Position the div relative to its parent */
+  bottom: 0; /* Align it to the bottom of the parent container */
+  opacity: 1;
+}
+
 @keyframes waterAnim {
   0% {transform: translate(0,100dvh);}
   100% {transform: translate(0,-100dvh);}
@@ -195,6 +201,16 @@ body {
   height: 100vh; /* Full viewport height */
   background-color: #7867f8;
   opacity: 0;
+}
+
+.loaded-wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  background-color: #7867f8;
+  opacity: 1;
 }
 
 @keyframes waveAnim {
