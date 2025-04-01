@@ -169,7 +169,7 @@ body {
 
 @keyframes morph-to-droplet {
   0% {}
-  80% { transform: translate(-50%, calc(100vh - 150px)) scale(0.8); }
+  80% { transform: translate(-50%, calc(100vh - 150px)) scale(0.5); }
   100% { transform: translate(-50%, calc(100vh - 120px)) scale(0); }
 }
 
@@ -179,19 +179,19 @@ body {
 
 .water {
   position: absolute; /* Position the div relative to its parent */
-  bottom: 0; /* Align it to the bottom of the parent container */
+  bottom: -100dvh; /* Align it to the bottom of the parent container */
   opacity: 0;
 }
 
 .loaded-water {
   position: absolute; /* Position the div relative to its parent */
-  bottom: 0; /* Align it to the bottom of the parent container */
+  bottom: -100dvh; /* Align it to the bottom of the parent container */
   opacity: 0;
 }
 
 @keyframes waterAnim {
   0% {transform: translate(0,100dvh);}
-  100% {transform: translate(0,-100dvh);}
+  100% {transform: translate(0,-200dvh);}
 }
 
 @keyframes loadedWaterAnim {
@@ -221,7 +221,7 @@ body {
 }
 
 @keyframes waveAnim {
-  0% {transform: translate(0,200dvh);}
+  0% {transform: translate(0,300dvh);}
   100% {transform: translate(0dvh);}
 }
 
