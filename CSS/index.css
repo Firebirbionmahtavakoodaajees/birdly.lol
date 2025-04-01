@@ -25,6 +25,7 @@ body {
 }
 
 .navbar {
+    z-index: 1;
     position: sticky;
     display: flex;
     justify-content: space-between;
