@@ -11,17 +11,18 @@ import Layout from "../layouts/Layout.astro";
             <div class="grid-3">
                 <article class="card">
                     <h2>Basic</h2>
-                    <p>Placeholder text for the Basic tier. You can fill in session details, pricing, and delivery later.</p>
+                    <p>Placeholder text for the Basic tier. </p>
                 </article>
 
                 <article class="card accent">
+                    <span class="bestvalue">★ Best Value</span>
                     <h2>Standard</h2>
-                    <p>Placeholder text for the Standard tier. You can fill in session details, pricing, and delivery later.</p>
+                    <p>Placeholder text for the Standard tier. </p>
                 </article>
 
-                <article class="card">
+                <article class="card premium">
                     <h2>Premium</h2>
-                    <p>Placeholder text for the Premium tier. You can fill in session details, pricing, and delivery later.</p>
+                    <p>Placeholder text for the Premium tier. </p>
                 </article>
             </div>
         </div>
@@ -42,4 +43,39 @@ import Layout from "../layouts/Layout.astro";
     .accent {
         border: 2px solid var(--lavender);
     }
+
+    .premium {
+        position: relative;
+        border: 2px solid var(--black);
+        background: var(--white);
+    }
+
+    .premium::before {
+        content: "";
+        position: absolute;
+        inset: -8px;
+        border: 2px solid var(--lavender);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .accent {
+        border: 2px solid var(--lavender);
+        position: relative;
+    }
+
+    .bestvalue {
+        position: absolute;
+        top: -12px;
+        right: 12px;
+        background: var(--black);
+        color: var(--lavender);
+        font-family: system-ui, sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        font-weight: 600;
+    }
+
 </style>
