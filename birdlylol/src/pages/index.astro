@@ -35,6 +35,14 @@ const slides = loadedSlides.length ? loadedSlides : fallbackSlides;
 				<span class="hero-label">Helsinki · Photography</span>
 				<h1 class="hero-title">Birdly</h1>
 			</div>
+			<a href="#showcase" class="scroll-cue" aria-label="Scroll to showcase">
+  				<span class="cue-circle">
+    				<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      					<line x1="12" y1="5" x2="12" y2="19"></line>
+      					<polyline points="5 12 12 19 19 12"></polyline>
+    				</svg>
+				</span>
+			</a>
 		</div>
 	</section>
 
@@ -79,6 +87,33 @@ const slides = loadedSlides.length ? loadedSlides : fallbackSlides;
 </script>
 
 <style>
+	.scroll-cue {
+		position: absolute;
+		left: 50%;
+		bottom: 2rem;
+		transform: translateX(-50%);
+		z-index: 2;
+		color: var(--white);
+		text-decoration: none;
+		animation: bounce 1.8s ease-in-out infinite;
+	}
+
+	.cue-circle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		border: 2px solid var(--lavender);
+		background: transparent;
+	}
+
+	@keyframes bounce {
+		0%, 100% { transform: translateX(-50%) translateY(0); }
+		50%      { transform: translateX(-50%) translateY(10px); }
+	}
+
 	.hero-logo {
 		height: 80px;
 		width: auto;
