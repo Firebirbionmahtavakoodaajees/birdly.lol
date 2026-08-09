@@ -1,0 +1,178 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&display=swap");
+
+:root {
+    --black: #000;
+    --white: #fff;
+    --lavender: #b7a6ff;
+    --nav-height: 72px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: "Fraunces", serif;
+    background-color: var(--white);
+    background-image: radial-gradient(var(--lavender) 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: var(--black);
+    position: relative;
+}
+
+/* Grain overlay */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+a {
+    color: inherit;
+    text-underline-offset: 0.2em;
+}
+
+main {
+    padding-top: var(--nav-height);
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+.container {
+    width: min(1100px, calc(100% - 2rem));
+    margin: 0 auto;
+}
+
+.section {
+    padding: 7rem 0;
+}
+
+.section h1 {
+    margin: 0 0 2rem;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+}
+
+/* Section label (small uppercase tracked-out) */
+.section-label {
+    display: block;
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--lavender);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.grid-3,
+.grid-4 {
+    display: grid;
+    gap: 1rem;
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.card {
+    border: 1px solid var(--black);
+    padding: 1rem;
+    background: var(--white);
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+    display: grid;
+    gap: 0.75rem;
+}
+
+/* Geometric divider between sections */
+.divider {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem 0;
+}
+
+.divider span {
+    width: 12px;
+    height: 12px;
+    background: var(--black);
+}
+
+.divider span:nth-child(even) {
+    background: var(--lavender);
+}
+
+/* Corner viewfinder brackets */
+.brackets {
+    position: relative;
+}
+
+.brackets::before,
+.brackets::after {
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--lavender);
+    z-index: 2;
+}
+
+.brackets::before {
+    top: -8px;
+    left: -8px;
+    border-right: 0;
+    border-bottom: 0;
+}
+
+.brackets::after {
+    bottom: -8px;
+    right: -8px;
+    border-left: 0;
+    border-top: 0;
+}
+
+@media (max-width: 900px) {
+    .grid-3,
+    .grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    :root {
+        --nav-height: 64px;
+    }
+
+    .section {
+        padding: 4rem 0;
+    }
+
+    .grid-3,
+    .grid-4 {
+        grid-template-columns: 1fr;
+    }
+}

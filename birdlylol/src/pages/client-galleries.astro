@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Placeholder from "../components/Placeholder.astro";
+
+// Edit client names and links here.
+const galleries = [
+    { name: "Client 1", url: "https://example.com" },
+    { name: "Client 2", url: "https://example.com" },
+    { name: "Client 3", url: "https://example.com" },
+    { name: "Client 4", url: "https://example.com" }
+];
+---
+
+<Layout title="Client Galleries | Birdly">
+    <section class="section">
+        <div class="container">
+            <span class="section-label">02 — Private Access</span>
+            <h1>Client Galleries</h1>
+
+            <div class="grid-4">
+                {galleries.map((gallery) => (
+                        <article class="card">
+                            <Placeholder aspect="3/2" />
+                            <h2>{gallery.name}</h2>
+                            <a href={gallery.url} target="_blank" rel="noreferrer">Open Gallery</a>
+                        </article>
+                ))}
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+    h2 {
+        margin: 1rem 0 0.5rem;
+        font-size: 1.25rem;
+    }
+</style>

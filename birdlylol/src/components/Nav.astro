@@ -1,0 +1,125 @@
+<nav class="nav">
+  <div class="container bar">
+    <a class="brand" href="/">
+      <img src="/favicon.png" alt="Birdly logo" class="brand-logo" />
+      <span class="brand-line"></span>
+      Birdly
+    </a>
+
+    <div class="links">
+      <a href="/#showcase">Showcase</a>
+      <a href="/client-galleries">Client Galleries</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .brand-logo {
+    height: 20px;
+    width: auto;
+    display: block;
+  }
+
+  .brand-line {
+    width: 14px;
+    height: 2px;
+    background: var(--black);
+  }
+
+  .nav {
+    position: fixed;
+    inset: 0 0 auto;
+    background: var(--white);
+    border-bottom: 2px solid var(--lavender);
+    z-index: 20;
+  }
+
+  .bar {
+    min-height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .brand,
+  .links a {
+    text-decoration: none;
+  }
+
+  .brand {
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .brand-mark .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--lavender);
+  }
+
+  .brand-mark .line {
+    width: 14px;
+    height: 2px;
+    background: var(--black);
+  }
+
+  .links {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .links a {
+    position: relative;
+    padding: 4px 0;
+    transition: color 0.15s;
+  }
+
+  .links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--lavender);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s;
+  }
+
+  .links a:hover::after {
+    transform: scaleX(1);
+  }
+
+  @media (max-width: 640px) {
+    .bar {
+      padding: 0.75rem 0;
+      align-items: flex-start;
+    }
+
+    .links {
+      gap: 0.75rem;
+      font-size: 0.75rem;
+    }
+  }
+</style>

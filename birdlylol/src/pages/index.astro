@@ -1,11 +1,191 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import Placeholder from "../components/Placeholder.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Add showcase images later in src/assets/showcase/
+const imageModules = import.meta.glob("../assets/showcase/*.{jpg,jpeg,png,webp,avif}", { eager: true });
+
+const slots = [
+	{ aspect: "2/1", className: "large" },
+	{ aspect: "3/2", className: "small-1" },
+	{ aspect: "2/1", className: "small-2" },
+	{ aspect: "3/2", className: "small-3" },
+	{ aspect: "3/2", className: "small-4" },
+	{ aspect: "2/1", className: "small-5" }
+];
+
+const loadedSlides = Object.values(imageModules).map((mod) => ({
+	src: mod.default.src,
+	width: mod.default.width,
+	height: mod.default.height
+}));
+
+const fallbackSlides = slots.map((slot) => ({
+	html: `<div style="background:#000;aspect-ratio:${slot.aspect};width:min(80vw,1000px)"></div>`
+}));
+
+const slides = loadedSlides.length ? loadedSlides : fallbackSlides;
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Birdly">
+	<section class="hero">
+		<div class="hero-box">
+			<div class="hero-content">
+				<img src="/favicon.png" alt="Birdly" class="hero-logo" />
+				<span class="hero-label">Helsinki · Photography</span>
+				<h1 class="hero-title">Birdly</h1>
+			</div>
+		</div>
+	</section>
+
+	<div class="divider">
+		<span></span><span></span><span></span><span></span><span></span>
+	</div>
+
+	<section id="showcase" class="section">
+		<div class="container">
+			<span class="section-label">01 — Featured Work</span>
+			<h1>Showcase</h1>
+
+			<div class="featured-grid brackets">
+				{slots.map((slot, index) => (
+					<button class={`gallery-trigger ${slot.className}`} type="button" data-open-slide={index}>
+						<Placeholder aspect={slot.aspect} />
+					</button>
+				))}
+			</div>
+		</div>
+	</section>
 </Layout>
+
+<script define:vars={{ slides, slideCount: slides.length }}>
+	import PhotoSwipeLightbox from "photoswipe/lightbox";
+
+	const lightbox = new PhotoSwipeLightbox({
+		dataSource: slides,
+		pswpModule: () => import("photoswipe"),
+		showHideAnimationType: "none",
+		bgOpacity: 1
+	});
+
+	lightbox.init();
+
+	document.querySelectorAll("[data-open-slide]").forEach((button) => {
+		button.addEventListener("click", () => {
+			const index = Number(button.dataset.openSlide) % slideCount;
+			lightbox.loadAndOpen(index);
+		});
+	});
+</script>
+
+<style>
+	.hero-logo {
+		height: 80px;
+		width: auto;
+		display: block;
+		margin-bottom: 1.5rem;
+		filter: invert(1);
+	}
+
+	.hero {
+		padding: 0;
+		position: relative;
+	}
+
+	.hero-box {
+		width: 100%;
+		height: calc(100vh - 72px);
+		background: #000;
+		position: relative;
+		display: flex;
+		align-items: flex-end;
+		justify-content: flex-start;
+		padding: 3rem;
+		overflow: hidden;
+	}
+
+	.hero-content {
+		position: relative;
+		z-index: 2;
+		color: var(--white);
+	}
+
+	.hero-label {
+		display: block;
+		font-family: system-ui, sans-serif;
+		font-size: 0.75rem;
+		letter-spacing: 0.3em;
+		text-transform: uppercase;
+		color: var(--lavender);
+		margin-bottom: 1rem;
+	}
+
+	.hero-title {
+		font-size: clamp(4rem, 15vw, 12rem);
+		font-weight: 600;
+		letter-spacing: -0.04em;
+		line-height: 0.85;
+		margin: 0;
+		font-style: italic;
+	}
+
+	@media (max-width: 640px) {
+		.hero-box {
+			height: calc(100vh - 64px);
+			padding: 1.5rem;
+		}
+	}
+
+	.hero :global(.hero-placeholder) {
+		height: calc(100vh - var(--nav-height));
+		aspect-ratio: auto;
+	}
+
+	.featured-grid {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		align-items: start;
+	}
+
+	.gallery-trigger {
+		padding: 0;
+		border: 0;
+		background: none;
+		cursor: pointer;
+		width: 100%;
+	}
+
+	.large {
+		grid-column: 1 / span 2;
+		grid-row: 1 / span 2;
+	}
+
+	.small-1 { grid-column: 3; grid-row: 1; }
+	.small-2 { grid-column: 4; grid-row: 1; }
+	.small-3 { grid-column: 3; grid-row: 2; }
+	.small-4 { grid-column: 4; grid-row: 2; }
+	.small-5 { grid-column: 1 / span 2; grid-row: 3; }
+
+	@media (max-width: 900px) {
+		.featured-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.large,
+		.small-1,
+		.small-2,
+		.small-3,
+		.small-4,
+		.small-5 {
+			grid-column: auto;
+			grid-row: auto;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.featured-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
