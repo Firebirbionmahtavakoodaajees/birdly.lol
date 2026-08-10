@@ -52,8 +52,9 @@ textarea {
 }
 
 .container {
-    width: min(1100px, calc(100% - 2rem));
+    width: min(1100px, 100%);
     margin: 0 auto;
+    padding-inline: 1rem;
 }
 
 .section {
@@ -174,5 +175,15 @@ textarea {
     .grid-3,
     .grid-4 {
         grid-template-columns: 1fr;
+    }
+
+    .brackets::before {
+        top: 0;
+        left: 0;
+    }
+
+    .brackets::after {
+        bottom: 0;
+        right: 0;
     }
 }

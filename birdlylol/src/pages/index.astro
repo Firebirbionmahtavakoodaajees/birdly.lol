@@ -114,6 +114,11 @@ const slides = loadedSlides.length ? loadedSlides : fallbackSlides;
 		50%      { transform: translateX(-50%) translateY(10px); }
 	}
 
+	@keyframes bounce-mobile {
+		0%, 100% { transform: translateY(0); }
+		50% { transform: translateY(10px); }
+	}
+
 	.hero-logo {
 		height: 80px;
 		width: auto;
@@ -161,13 +166,6 @@ const slides = loadedSlides.length ? loadedSlides : fallbackSlides;
 		line-height: 0.85;
 		margin: 0;
 		font-style: italic;
-	}
-
-	@media (max-width: 640px) {
-		.hero-box {
-			height: calc(100vh - 64px);
-			padding: 1.5rem;
-		}
 	}
 
 	.hero :global(.hero-placeholder) {
@@ -218,8 +216,22 @@ const slides = loadedSlides.length ? loadedSlides : fallbackSlides;
 	}
 
 	@media (max-width: 640px) {
+		.hero-box {
+			height: calc(100vh - 64px);
+			padding: 1.5rem;
+		}
+
+		.scroll-cue {
+			left: auto;
+			right: 1.5rem;
+			transform: none;
+			animation: bounce-mobile 1.8s ease-in-out infinite;
+		}
+
 		.featured-grid {
 			grid-template-columns: 1fr;
 		}
+
 	}
+
 </style>

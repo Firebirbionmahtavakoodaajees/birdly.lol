@@ -125,4 +125,32 @@ const year = new Date().getFullYear();
         width: auto;
         display: block;
     }
+
+    @media (max-width: 640px) {
+        .footer {
+            padding: 2rem 0 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .footer-top {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom-color: var(--lavender);
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem 1rem;
+            width: 100%;
+        }
+
+        .footer-bottom {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.35rem;
+        }
+    }
 </style>

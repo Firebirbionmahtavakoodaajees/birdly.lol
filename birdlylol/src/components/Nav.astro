@@ -1,5 +1,4 @@
 <nav class="nav">
-
   <div class="nav-bg" aria-hidden="true">
     <span></span><span></span><span></span>
     <span></span><span></span><span></span>
@@ -16,11 +15,21 @@
       Birdly
     </a>
 
-    <div class="links">
-      <a href="/#showcase">Showcase</a>
-      <a href="/client-galleries">Client Galleries</a>
-      <a href="/pricing">Pricing</a>
-      <a href="/contact">Contact</a>
+    <div class="menu">
+      <!-- Hidden Checkbox handles the toggle state -->
+      <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-hidden="true" />
+
+      <!-- Label acts as your new summary/hamburger button -->
+      <label for="menu-toggle" class="menu-button" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </label>
+
+      <div class="links">
+        <a href="/#showcase">Showcase</a>
+        <a href="/client-galleries">Client Galleries</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/contact">Contact</a>
+      </div>
     </div>
   </div>
 </nav>
@@ -28,7 +37,6 @@
 <style>
   .brand-logo {
     height: 20px;
-    width: auto;
     display: block;
   }
 
@@ -44,7 +52,8 @@
     background: linear-gradient(to right, var(--white) 60%, #f2eeff 100%);
     border-bottom: 2px solid var(--lavender);
     z-index: 20;
-    overflow: hidden;
+    width: 100%;
+    overflow-x: clip;
   }
 
   .nav-bg {
@@ -52,6 +61,7 @@
     inset: 0;
     pointer-events: none;
     z-index: 0;
+    overflow: hidden;
   }
 
   .nav-bg > span {
@@ -90,6 +100,8 @@
     gap: 1rem;
     position: relative;
     z-index: 1;
+    box-sizing: border-box;
+    width: 100%;
   }
 
   .brand,
@@ -106,23 +118,27 @@
     letter-spacing: -0.02em;
   }
 
-  .brand-mark {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
+  .menu {
+    position: relative;
   }
 
-  .brand-mark .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--lavender);
+  .menu-toggle {
+    display: none;
   }
 
-  .brand-mark .line {
-    width: 14px;
+  .menu-button {
+    cursor: pointer;
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 8px;
+  }
+
+  .menu-button span {
+    width: 24px;
     height: 2px;
     background: var(--black);
+    display: block;
   }
 
   .links {
@@ -139,7 +155,6 @@
   .links a {
     position: relative;
     padding: 4px 0;
-    transition: color 0.15s;
   }
 
   .links a::after {
@@ -161,13 +176,71 @@
 
   @media (max-width: 640px) {
     .bar {
-      padding: 0.75rem 0;
-      align-items: flex-start;
+      padding: 0.75rem 1rem;
     }
 
-    .links {
-      gap: 0.75rem;
-      font-size: 0.75rem;
+    .menu-button {
+      display: flex;
+    }
+
+    .menu-button span {
+      width: 24px;
+      height: 2px;
+      background: var(--black);
+      display: block;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .menu > .links {
+      position: absolute;
+      top: calc(100% + 12px);
+      right: 0;
+      background: var(--white);
+      border: 2px solid var(--lavender);
+      padding: 1rem 1.5rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      min-width: 180px;
+      max-width: calc(100vw - 2rem);
+      box-sizing: border-box;
+      z-index: 30;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .menu-toggle:checked ~ .links {
+      display: flex;
+      position: absolute;
+      top: calc(100% + 12px);
+      right: 0;
+      background: var(--white);
+      border: 2px solid var(--lavender);
+      padding: 1rem 1.5rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      min-width: 180px;
+      max-width: calc(100vw - 2rem);
+      box-sizing: border-box;
+      z-index: 30;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .menu-toggle:checked ~ .menu-button span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .menu-toggle:checked ~ .menu-button span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle:checked ~ .menu-button span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
     }
   }
 </style>
