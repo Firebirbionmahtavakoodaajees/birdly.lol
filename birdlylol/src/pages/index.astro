@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Placeholder from "../components/Placeholder.astro";
+import heroImage from "../assets/hero.jpg";
 
 // Add showcase images later in src/assets/showcase/
 const imageModules = import.meta.glob("../assets/showcase/*.{jpg,jpeg,png,webp,avif}", { eager: true });
@@ -30,6 +31,7 @@ const slides = loadedSlides.length ? loadedSlides : fallbackSlides;
 <Layout title="Birdly">
 	<section class="hero">
 		<div class="hero-box">
+			<img src={heroImage.src} alt="Birdly photography" class="hero-image" />
 			<div class="hero-content">
 				<img src="/favicon.png" alt="Birdly" class="hero-logo" />
 				<span class="hero-label">Helsinki · Photography</span>
@@ -44,6 +46,11 @@ const slides = loadedSlides.length ? loadedSlides : fallbackSlides;
 				</span>
 			</a>
 		</div>
+	</section>
+
+	<section class="intro">
+		<p class="intro-description">Meet the only budget photographers in Helsinki!</p>
+		<p class="intro-main">Quality • Value, from only <span class="price-badge"> 10€ </span>!</p>
 	</section>
 
 	<div class="divider">
@@ -87,6 +94,14 @@ const slides = loadedSlides.length ? loadedSlides : fallbackSlides;
 </script>
 
 <style>
+	.hero-image {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
 	.scroll-cue {
 		position: absolute;
 		left: 50%;
@@ -171,6 +186,40 @@ const slides = loadedSlides.length ? loadedSlides : fallbackSlides;
 	.hero :global(.hero-placeholder) {
 		height: calc(100vh - var(--nav-height));
 		aspect-ratio: auto;
+	}
+
+	.price-badge {
+		background: var(--lavender);
+		border-radius: 16px;
+		padding: 2px 12px 2px 6px;
+		display: inline-block;
+		margin-left: 4px;
+		margin-right: 4px;
+	}
+
+	.intro {
+		padding: 4rem 2rem;
+		text-align: center;
+	}
+
+	.intro-description {
+		font-family: system-ui, sans-serif;
+		font-size: clamp(0.25rem, 1.5vw, 2rem);
+		letter-spacing: 0.25em;
+		text-transform: uppercase;
+		color: var(--lavender);
+		margin: 0 0 1.5rem;
+		font-weight: 600;
+	}
+
+	.intro-main {
+		font-family: "Fraunces", serif;
+		font-size: clamp(2rem, 5vw, 4rem);
+		font-weight: 400;
+		line-height: 1.2;
+		letter-spacing: -0.02em;
+		margin: 0;
+		font-style: italic;
 	}
 
 	.featured-grid {

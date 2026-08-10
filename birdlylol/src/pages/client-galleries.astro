@@ -2,12 +2,21 @@
 import Layout from "../layouts/Layout.astro";
 import Placeholder from "../components/Placeholder.astro";
 
+import lapland from "../assets/clients/lapland.jpg";
+import concert from "../assets/clients/concert.jpg";
+import wanhat from "../assets/clients/wanhat.jpg";
+import carmeet from "../assets/clients/carmeet.jpg";
+import dances from "../assets/clients/dances.jpg";
+import celebration from "../assets/clients/celebration.jpg";
+
 // Edit client names and links here.
 const galleries = [
-    { name: "Client 1", url: "https://example.com" },
-    { name: "Client 2", url: "https://example.com" },
-    { name: "Client 3", url: "https://example.com" },
-    { name: "Client 4", url: "https://example.com" }
+    { name: "Lapland", url: "https://birdly.pixieset.com/lappiandnorway2025/", image: lapland },
+    { name: "Concert", url: "https://birdly.pixieset.com/maykvappu2025ruikkutuikku/", image: concert },
+    { name: "Wanhat", url: "https://birdly.pixieset.com/wanhattanssit/", image: wanhat },
+    { name: "Carmeet", url: "https://birdly.pixieset.com/vantaacruising2024/", image: carmeet },
+    { name: "Dances", url: "https://birdly31.pixieset.com/ysitanssit2026/", image: dances },
+    { name: "Celebration", url: "https://birdly31.pixieset.com/mayk30vjuhla/", image: celebration }
 ];
 ---
 
@@ -20,7 +29,7 @@ const galleries = [
             <div class="grid-4">
                 {galleries.map((gallery) => (
                         <article class="card">
-                            <Placeholder aspect="3/2" />
+                            <img src={gallery.image.src} alt={gallery.name} style="width:100%;aspect-ratio:3/2;object-fit:cover;" />
                             <h2>{gallery.name}</h2>
                             <a href={gallery.url} target="_blank" rel="noreferrer">Open Gallery</a>
                         </article>
