@@ -1,9 +1,20 @@
 # birdly.lol
 Marketing. Style. Photos. 
 
+---
+
+## Roadmap
+
+1. Add all images and polish the showcase
+2. Release V2
+3. Expand the main page
+4. Call to action or other way of getting in touch, purchasing, easier to contact @ more ways to contact
+5. Polish the UX
+6. Optimize website
+7. Make sales!
 
 ---
-# Design and programming principles:
+## Design and programming principles:
 
 1. SURGICAL CHANGES ONLY
 
