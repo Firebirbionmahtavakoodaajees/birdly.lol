@@ -56,5 +56,12 @@ Marketing. Style. Photos.
 10. IF THERE ARE MULTIPLE VALID APPROACHES
    - Choose the one with the least code and least complexity.
 
+11. USE AI ONLY FOR
+   - Generating sensable placeholders
+   - Text
+   - Ideas
+   - Ways to implement
+   - NOTHING ELSE
+
 ---
 
