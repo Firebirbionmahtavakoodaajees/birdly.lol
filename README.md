@@ -3,7 +3,7 @@ Marketing. Style. Photos.
 
 
 ---
-Design and programming principles:
+# Design and programming principles:
 
 1. SURGICAL CHANGES ONLY
 
