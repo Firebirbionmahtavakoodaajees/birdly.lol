@@ -1,0 +1,95 @@
+---
+import { Image } from "astro:assets";
+const { images } = Astro.props as { images: { default: ImageMetadata }[] };
+---
+
+<div class="gallery">
+    {images.map(({ default: img }) => (
+            <a
+                    href={img.src}
+                    data-pswp-width={img.width}
+                    data-pswp-height={img.height}
+                    class={img.width / img.height > 2 ? "wide" : img.height > img.width ? "tall" : ""}
+            >
+                <Image src={img} alt="Birdly photoshoot" widths={[600, 1200]} />
+            </a>
+    ))}
+</div>
+
+<style>
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 3rem;
+        grid-auto-flow: dense;
+    }
+
+    .gallery :global(img) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .gallery :global(a) {
+        position: relative;
+        display: block;
+        aspect-ratio: 3 / 2;
+        border: 2px solid var(--lavender);
+        padding: 4px;
+    }
+
+    .gallery :global(img) {
+        filter: grayscale(1);
+        transition: filter 0.25s;
+    }
+
+    .gallery :global(a:hover img) {
+        filter: grayscale(0);
+    }
+
+    .gallery :global(a.wide) {
+        grid-column: span 2;
+        aspect-ratio: 2.35 / 1;
+    }
+
+    .gallery :global(a.tall) {
+        grid-row: span 2;
+        aspect-ratio: auto;
+    }
+
+    .gallery :global(a.tall img) {
+        position: absolute;
+        inset: 4px;
+        width: calc(100% - 8px);  /* 100% = padding box, minus 4px each side */
+        height: calc(100% - 8px);
+    }
+
+    @media (max-width: 640px) {
+        .gallery {
+            grid-template-columns: 1fr;
+        }
+
+        .gallery :global(a.wide) {
+            grid-column: auto;
+        }
+
+        .gallery :global(a.tall) {
+            grid-row: auto;
+            aspect-ratio: 2 / 3;
+        }
+
+        .gallery :global(a.tall img) {
+            position: static;
+            width: 100%;
+            height: 100%;
+        }
+    }
+</style>
+
+<script>
+    import PhotoSwipeLightbox from "photoswipe/lightbox";
+    import "photoswipe/style.css";
+    new PhotoSwipeLightbox({ gallery: ".gallery", children: "a", pswpModule: () => import("photoswipe"), bgOpacity: 0.9 }).init();
+</script>

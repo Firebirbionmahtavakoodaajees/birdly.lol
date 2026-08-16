@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Gallery from "../components/Gallery.astro";
+
+// Organize photos as src/assets/photos/<shoot-name>/*.jpg
+// Folder name becomes the section title: "summer-2026" → "Summer 2026"
+const all = import.meta.glob<{ default: ImageMetadata }>(
+    "../assets/photos/*/*.{jpg,jpeg,png,webp}",
+    { eager: true }
+);
+
+const shoots = Object.entries(all).reduce((acc, [path, img]) => {
+    const folder = path.split("/").at(-2)!;
+    (acc[folder] ??= []).push(img);
+    return acc;
+}, {} as Record<string, { default: ImageMetadata }[]>);
+
+const title = (s: string) =>
+    s.replaceAll("-", " ").replace(/\b\w/g, (c) => c.toUpperCase());
+---
+
+<Layout title="Birdly — All Photos">
+
+    <section class="page-header">
+        <span class="section-label">Archive</span>
+        <h1>All Photos</h1>
+    </section>
+
+    {Object.entries(shoots).map(([name, images], i) => (
+            <section class="section">
+                <div class="container">
+                    <span class="section-label">{String(i + 1).padStart(2, "0")} — Photoshoot</span>
+                    <h1>{title(name)}</h1>
+                    <Gallery images={images} />
+                </div>
+            </section>
+    ))}
+</Layout>
+
+<style>
+    .page-header {
+        padding: 4rem 2rem 0;
+        text-align: center;
+    }
+</style>
