@@ -2,7 +2,7 @@
 dist/
 
 # generated types
-.astro/
+birdlylol/.astro/
 
 # dependencies
 node_modules/
