@@ -86,6 +86,12 @@ const { images } = Astro.props as { images: { default: ImageMetadata }[] };
             height: 100%;
         }
     }
+
+    @media (max-width: 900px) {
+        .gallery :global(img) {
+            filter: none;
+        }
+    }
 </style>
 
 <script>
