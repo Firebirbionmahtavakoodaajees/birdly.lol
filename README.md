@@ -63,5 +63,11 @@ Marketing. Style. Photos.
    - Ways to implement
    - NOTHING ELSE
 
+12. PREFER SMALL SEPARATE FILES / COMPONENTS
+   - Prefer adding a new small file or component instead of making an existing file bigger, if possible.
+   - Keep files focused and compact.
+   - If something can cleanly live as its own component, partial, utility, or style file, prefer that approach.
+   - Do not split things up if it creates unnecessary complexity, but in general prefer separation over bloating existing files.
+
 ---
 
