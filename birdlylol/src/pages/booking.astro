@@ -1,0 +1,500 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const times = Array.from({ length: 48 }, (_, index) =>
+    `${String(Math.floor(index / 2)).padStart(2, "0")}:${index % 2 ? "30" : "00"}`
+);
+
+const durations = Array.from({ length: 20 }, (_, index) => {
+    const minutes = (index + 1) * 30;
+    const hours = minutes / 60;
+
+    return {
+        minutes,
+        label: minutes === 30
+            ? "30 minutes"
+            : `${hours} hour${hours === 1 ? "" : "s"}`
+    };
+});
+---
+
+<Layout title="Booking | Birdly">
+    <section class="section">
+        <div class="container">
+            <span class="section-label">02 — Client Booking</span>
+
+            <div class="title-row">
+                <h1>Booking</h1>
+
+                <div class="geometry" aria-hidden="true">
+                    <span class="square"></span>
+                    <span class="diamond"></span>
+                    <span class="triangle"></span>
+                    <span class="block"></span>
+                </div>
+            </div>
+
+            <p class="intro">We're available 24/7.</p>
+
+            <div class="booking-layout">
+                <form id="booking-form">
+                    <span class="panel-number">01</span>
+
+                    <div class="fields">
+                        <label class="date-field">
+                            Date
+                            <input id="booking-date" type="date" required />
+                        </label>
+
+                        <label>
+                            Start time
+                            <select id="booking-time" required>
+                                <option value="">Select a time</option>
+
+                                {times.map((time) => (
+                                        <option value={time} data-time={time}>
+                                            {time}
+                                        </option>
+                                ))}
+                            </select>
+                        </label>
+
+                        <label>
+                            Duration
+                            <select id="booking-duration" required>
+                                {durations.map(({ minutes, label }) => (
+                                        <option value={minutes}>{label}</option>
+                                ))}
+                            </select>
+                        </label>
+                    </div>
+
+                    <button id="confirm-booking" type="submit">
+                        Confirm booking
+                    </button>
+
+                    <p id="booking-status" aria-live="polite"></p>
+                </form>
+
+                <section class="booked-panel">
+                    <span class="panel-number">02</span>
+                    <span class="panel-label">Already booked</span>
+                    <h2 id="selected-date">Select a date</h2>
+
+                    <div id="booked-times">
+                        <span class="empty">No date selected</span>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+    .title-row {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .title-row h1 {
+        margin-bottom: 0;
+    }
+
+    .geometry {
+        position: relative;
+        width: 120px;
+        height: 80px;
+        flex: none;
+    }
+
+    .geometry span {
+        position: absolute;
+        display: block;
+    }
+
+    .geometry .square {
+        bottom: 0;
+        left: 0;
+        width: 38px;
+        height: 38px;
+        border: 2px solid var(--lavender);
+    }
+
+    .geometry .diamond {
+        top: 6px;
+        left: 42px;
+        width: 30px;
+        height: 30px;
+        border: 2px solid var(--lavender);
+        transform: rotate(45deg);
+    }
+
+    .geometry .triangle {
+        right: 0;
+        bottom: 0;
+        width: 0;
+        height: 0;
+        border-right: 22px solid transparent;
+        border-bottom: 42px solid var(--lavender);
+        border-left: 22px solid transparent;
+    }
+
+    .geometry .block {
+        top: 0;
+        left: 0;
+        width: 26px;
+        height: 14px;
+        background: var(--lavender);
+    }
+
+    .intro {
+        max-width: 48rem;
+        margin: 2rem 0 0;
+        color: var(--lavender);
+        font-family: system-ui, sans-serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        line-height: 1.7;
+        text-transform: uppercase;
+    }
+
+    .booking-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 3rem;
+    }
+
+    #booking-form,
+    .booked-panel {
+        position: relative;
+        border: 2px solid var(--lavender);
+        padding: 3rem 2rem 2rem;
+    }
+
+    .panel-number {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-bottom: 2px solid var(--lavender);
+        border-left: 2px solid var(--lavender);
+        color: var(--lavender);
+        font-family: system-ui, sans-serif;
+        font-size: 0.65rem;
+    }
+
+    .fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .date-field {
+        grid-column: 1 / -1;
+    }
+
+    label,
+    .panel-label {
+        display: grid;
+        gap: 0.75rem;
+        color: var(--lavender);
+        font-family: system-ui, sans-serif;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+
+    input,
+    select,
+    button {
+        width: 100%;
+        min-height: 52px;
+        border: 2px solid var(--lavender);
+        border-radius: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+    }
+
+    input,
+    select {
+        padding: 0 1rem;
+        color: var(--lavender);
+        accent-color: var(--lavender);
+    }
+
+    button {
+        margin-top: 12px;
+        padding: 0 1rem;
+        font-family: system-ui, sans-serif;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+
+    button:hover:not(:disabled) {
+        background: var(--lavender);
+    }
+
+    button:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
+
+    #booking-status {
+        min-height: 1rem;
+        margin: 1rem 0 0;
+        color: var(--lavender);
+        font-family: system-ui, sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+    }
+
+    .booked-panel h2 {
+        margin: 0.75rem 0 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid var(--lavender);
+        font-size: clamp(1.5rem, 3vw, 2.5rem);
+        font-style: italic;
+        font-weight: 500;
+    }
+
+    #booked-times {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+
+    #booked-times span {
+        padding: 0.75rem 0.25rem;
+        border: 1px solid var(--lavender);
+        color: var(--lavender);
+        font-family: system-ui, sans-serif;
+        font-size: 0.75rem;
+        text-align: center;
+        text-decoration: line-through;
+    }
+
+    #booked-times .empty {
+        grid-column: 1 / -1;
+        border: 0;
+        text-align: left;
+        text-decoration: none;
+        opacity: 0.6;
+    }
+
+    @media (max-width: 800px) {
+        .booking-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .title-row {
+            align-items: center;
+        }
+
+        .geometry {
+            width: 90px;
+            transform: scale(0.75);
+            transform-origin: right center;
+        }
+
+        #booking-form,
+        .booked-panel {
+            padding: 3rem 1rem 1rem;
+        }
+
+        .fields {
+            grid-template-columns: 1fr;
+        }
+
+        .date-field {
+            grid-column: auto;
+        }
+
+        #booked-times {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+</style>
+
+<script>
+    import { supabase } from "../db/supabase";
+
+    function initBooking() {
+        const form = document.querySelector<HTMLFormElement>("#booking-form");
+        if (!form || form.dataset.ready) return;
+
+        form.dataset.ready = "true";
+
+        const dateInput =
+            document.querySelector<HTMLInputElement>("#booking-date")!;
+        const timeInput =
+            document.querySelector<HTMLSelectElement>("#booking-time")!;
+        const durationInput =
+            document.querySelector<HTMLSelectElement>("#booking-duration")!;
+        const confirm =
+            document.querySelector<HTMLButtonElement>("#confirm-booking")!;
+        const status =
+            document.querySelector<HTMLElement>("#booking-status")!;
+        const dateLabel =
+            document.querySelector<HTMLElement>("#selected-date")!;
+        const bookedList =
+            document.querySelector<HTMLElement>("#booked-times")!;
+        const options = [
+            ...timeInput.querySelectorAll<HTMLOptionElement>("[data-time]")
+        ];
+
+        let bookedSet = new Set<string>();
+
+        function formatDate(date: Date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+
+            return `${year}-${month}-${day}`;
+        }
+
+        function updateOptions() {
+            const slotCount = Number(durationInput.value) / 30;
+            const now = new Date();
+            const today = formatDate(now);
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+            options.forEach((option, index) => {
+                const time = option.dataset.time!;
+                const [hours, minutes] = time.split(":").map(Number);
+
+                const passed =
+                    dateInput.value === today &&
+                    hours * 60 + minutes <= currentMinutes;
+
+                const range = options.slice(index, index + slotCount);
+                const unavailable =
+                    range.length < slotCount ||
+                    range.some((slot) =>
+                        bookedSet.has(slot.dataset.time!)
+                    );
+
+                option.disabled = passed || unavailable;
+
+                option.textContent = bookedSet.has(time)
+                    ? `${time} — Booked`
+                    : passed
+                        ? `${time} — Passed`
+                        : unavailable
+                            ? `${time} — Unavailable`
+                            : time;
+            });
+        }
+
+        async function loadBookings() {
+            status.textContent = "";
+            timeInput.value = "";
+
+            const selectedDate = dateInput.value;
+
+            dateLabel.textContent = new Date(
+                `${selectedDate}T12:00:00`
+            ).toLocaleDateString("en-FI", {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            });
+
+            const { data, error } = await supabase
+                .from("bookings")
+                .select("time")
+                .eq("date", selectedDate)
+                .order("time");
+
+            if (error) {
+                status.textContent = "Unable to load bookings";
+                return;
+            }
+
+            const booked = data.map(({ time }) => time.slice(0, 5));
+            bookedSet = new Set(booked);
+
+            updateOptions();
+            bookedList.replaceChildren();
+
+            if (!booked.length) {
+                const empty = document.createElement("span");
+                empty.className = "empty";
+                empty.textContent = "No booked times";
+                bookedList.append(empty);
+                return;
+            }
+
+            booked.forEach((time) => {
+                const item = document.createElement("span");
+                item.textContent = time;
+                bookedList.append(item);
+            });
+        }
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            if (!dateInput.value || !timeInput.value) return;
+
+            confirm.disabled = true;
+            status.textContent = "Booking...";
+
+            const slotCount = Number(durationInput.value) / 30;
+            const startIndex = options.findIndex(
+                (option) => option.value === timeInput.value
+            );
+
+            const booking = options
+                .slice(startIndex, startIndex + slotCount)
+                .map((option) => ({
+                    date: dateInput.value,
+                    time: option.value
+                }));
+
+            const { error } = await supabase
+                .from("bookings")
+                .insert(booking);
+
+            await loadBookings();
+            confirm.disabled = false;
+
+            status.textContent = !error
+                ? "Booking confirmed"
+                : error.code === "23505"
+                    ? "This time is already booked"
+                    : "Unable to complete booking";
+        });
+
+        durationInput.addEventListener("change", () => {
+            timeInput.value = "";
+            updateOptions();
+        });
+
+        const today = formatDate(new Date());
+
+        dateInput.min = today;
+        dateInput.value = today;
+        dateInput.addEventListener("change", loadBookings);
+
+        loadBookings();
+    }
+
+    initBooking();
+    document.addEventListener("astro:page-load", initBooking);
+</script>
