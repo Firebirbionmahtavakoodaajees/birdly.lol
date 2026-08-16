@@ -66,7 +66,7 @@ const { images } = Astro.props as { images: { default: ImageMetadata }[] };
         height: calc(100% - 8px);
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 900px) {
         .gallery {
             grid-template-columns: 1fr;
         }
@@ -99,9 +99,8 @@ const { images } = Astro.props as { images: { default: ImageMetadata }[] };
     import "photoswipe/style.css";
     new PhotoSwipeLightbox({ gallery: ".gallery", children: "a", pswpModule: () => import("photoswipe"), bgOpacity: 0.9 }).init();
 
-    const io = new IntersectionObserver(
-        (es) => es.forEach((e) => e.target.classList.toggle("on", e.isIntersecting)),
-        { threshold: 0.25 }
+    const io = new IntersectionObserver((es) =>
+        es.forEach((e) => e.isIntersecting && e.target.classList.add("on"))
     );
     document.querySelectorAll(".gallery a").forEach((a) => io.observe(a));
 </script>
