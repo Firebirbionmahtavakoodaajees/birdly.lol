@@ -80,11 +80,6 @@ const durations = Array.from({ length: 20 }, (_, index) => {
 <style>
     [hidden] { display: none !important; }
 
-    .calendar-panel {
-        max-width: 340px;
-        margin: 0 auto;
-    }
-
     .login-prompt {
         margin-top: 2rem;
         color: var(--lavender);
@@ -119,6 +114,11 @@ const durations = Array.from({ length: 20 }, (_, index) => {
         font-size: 0.65rem;
     }
 
+    .calendar-panel {
+        max-width: 340px;
+        margin: 0 auto;
+    }
+
     .calendar-header {
         display: grid;
         grid-template-columns: 48px 1fr 48px;
@@ -128,29 +128,29 @@ const durations = Array.from({ length: 20 }, (_, index) => {
 
     .calendar-header h2 {
         margin: 0;
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-size: clamp(1.25rem, 3vw, 2rem);
         font-style: italic;
         font-weight: 500;
         text-align: center;
     }
 
     .calendar-header button {
-        width: 48px;
-        height: 48px;
+        width: 40px;
+        height: 40px;
         color: var(--lavender);
     }
 
     .weekdays, .days {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        gap: 6px;
+        gap: 4px;
     }
 
     .weekdays {
-        margin-bottom: 6px;
+        margin-bottom: 4px;
         color: var(--lavender);
         font-family: system-ui, sans-serif;
-        font-size: 0.6rem;
+        font-size: 0.55rem;
         letter-spacing: 0.1em;
         text-align: center;
     }
@@ -162,11 +162,12 @@ const durations = Array.from({ length: 20 }, (_, index) => {
         background: transparent;
         color: inherit;
         font: inherit;
+        font-size: 0.8rem;
         cursor: pointer;
     }
 
     .days button.empty { visibility: hidden; }
-    .days button.selected { outline: 2px solid var(--lavender); outline-offset: 3px; }
+    .days button.selected { outline: 2px solid var(--lavender); outline-offset: 2px; }
     .days button:disabled:not(.empty) { opacity: 0.3; cursor: not-allowed; }
 
     .fields {
@@ -236,7 +237,7 @@ const durations = Array.from({ length: 20 }, (_, index) => {
     @media (max-width: 500px) {
         #booking-form { padding: 3rem 1rem 1rem; }
         .fields { grid-template-columns: 1fr; }
-        .weekdays, .days { gap: 3px; }
+        .calendar-panel { max-width: 100%; }
     }
 </style>
 
@@ -391,7 +392,8 @@ const durations = Array.from({ length: 20 }, (_, index) => {
                 return;
             }
 
-            window.location.href = "/account";
+            status.textContent = "Booking confirmed";
+            setTimeout(() => { window.location.href = "/account"; }, 1200);
         });
 
         renderCalendar();
@@ -401,7 +403,6 @@ const durations = Array.from({ length: 20 }, (_, index) => {
     initBooking();
     document.addEventListener("astro:page-load", initBooking);
 
-    // Login gate: hide booking, show prompt until authenticated.
     const prompt = document.querySelector<HTMLElement>("#login-prompt");
     const area = document.querySelector<HTMLElement>("#booking-area");
 
