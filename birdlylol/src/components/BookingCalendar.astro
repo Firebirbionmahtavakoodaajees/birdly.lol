@@ -1,433 +1,569 @@
 ---
-import Layout from "../layouts/Layout.astro";
-
-const times = Array.from({ length: 48 }, (_, index) =>
-    `${String(Math.floor(index / 2)).padStart(2, "0")}:${index % 2 ? "30" : "00"}`
+const times = Array.from({ length: 48 }, (_, i) =>
+    `${String(Math.floor(i / 2)).padStart(2, "0")}:${i % 2 ? "30" : "00"}`
 );
+
+const durations = Array.from({ length: 20 }, (_, i) => ({
+    minutes: (i + 1) * 30,
+    label: (i + 1) * 30 === 30 ? "30 MIN" : `${(i + 1) / 2} HR`,
+}));
 ---
 
-<Layout title="Book a session — Birdly">
-    <section class="booking-intro">
-        <span class="booking-label">Helsinki · Photography</span>
-        <h1>Book a session</h1>
-        <p>Available every day, around the clock.</p>
-    </section>
+<form id="booking-form" class="cal-layout">
+    <div class="col">
+        <header>
+            <span>Date</span>
+            <div class="controls">
+                <button type="button" id="prev-month" aria-label="Previous month">&larr;</button>
+                <span id="month-label"></span>
+                <button type="button" id="next-month" aria-label="Next month">&rarr;</button>
+            </div>
+        </header>
 
-    <div class="divider">
-        <span></span><span></span><span></span><span></span><span></span>
+        <div class="days-grid" id="days-grid">
+            <span>MO</span><span>TU</span><span>WE</span><span>TH</span><span>FR</span><span>SA</span><span>SU</span>
+        </div>
     </div>
 
-    <section class="section">
-        <div class="container">
-            <span class="section-label">02 — Client booking</span>
+    <div class="col">
+        <header>
+            <label for="booking-duration">Session</label>
+            <span>Session</span>
+            <select id="booking-duration" required>
+                {durations.map((d) => (
+                        <option value={d.minutes}>{d.label}</option>
+                ))}
+            </select>
+        </header>
 
-            <div class="booking-grid">
-                <section class="calendar-panel">
-                    <header class="calendar-header">
-                        <button id="previous-month" type="button" aria-label="Previous month">←</button>
-                        <h2 id="month-label"></h2>
-                        <button id="next-month" type="button" aria-label="Next month">→</button>
-                    </header>
-
-                    <div class="weekdays">
-                        <span>MON</span>
-                        <span>TUE</span>
-                        <span>WED</span>
-                        <span>THU</span>
-                        <span>FRI</span>
-                        <span>SAT</span>
-                        <span>SUN</span>
-                    </div>
-
-                    <div class="days">
-                        {Array.from({ length: 42 }, () => (
-                                <button type="button" disabled></button>
-                        ))}
-                    </div>
-                </section>
-
-                <section class="time-panel">
-                    <header class="time-header">
-                        <span class="panel-label">Available times</span>
-                        <h2 id="selected-date"></h2>
-                    </header>
-
-                    <div class="legend">
-                        <span>Available</span>
-                        <span>Booked</span>
-                    </div>
-
-                    <div class="times">
-                        {times.map((time) => (
-                                <button type="button" data-time={time}>{time}</button>
-                        ))}
-                    </div>
-
-                    <button id="confirm-booking" type="button" disabled>
-                        Book selected time
-                    </button>
-
-                    <p id="booking-status" aria-live="polite"></p>
-                </section>
-            </div>
+        <div class="time-grid">
+            {times.map((t) => (
+                    <button type="button" class="time-btn" data-time={t}>{t}</button>
+            ))}
         </div>
-    </section>
-</Layout>
+
+        <footer>
+            <span id="booking-status" aria-live="polite"></span>
+            <button type="submit" id="confirm-booking" class="confirm-btn" disabled>Confirm Booking</button>
+        </footer>
+    </div>
+</form>
 
 <style>
-    .booking-intro {
-        padding: clamp(5rem, 12vw, 9rem) 2rem;
-        text-align: center;
-    }
-
-    .booking-label,
-    .panel-label {
-        display: block;
+    .cal-layout {
+        display: grid;
+        gap: 2rem;
         color: var(--lavender);
-        font-family: system-ui, sans-serif;
+        font-family: monospace;
         font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.3em;
         text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
 
-    .booking-label {
+    @media (min-width: 768px) {
+        .cal-layout {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .col {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* ── Header ── */
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--lavender);
+        padding-bottom: 0.75rem;
         margin-bottom: 1.5rem;
     }
 
-    .booking-intro h1 {
-        margin: 0;
-        font-size: clamp(4rem, 12vw, 9rem);
-        font-style: italic;
-        font-weight: 600;
-        letter-spacing: -0.04em;
-        line-height: 0.85;
-    }
-
-    .booking-intro p {
-        margin: 2rem 0 0;
-        font-family: system-ui, sans-serif;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-    }
-
-    .booking-grid {
-        display: grid;
-        grid-template-columns: 1.2fr 1fr;
-        gap: 12px;
-        margin-top: 3rem;
-        align-items: start;
-    }
-
-    .calendar-panel,
-    .time-panel {
-        border: 2px solid var(--lavender);
-        padding: clamp(1rem, 3vw, 2rem);
-    }
-
-    .calendar-header {
-        display: grid;
-        grid-template-columns: 48px 1fr 48px;
+    .controls {
+        display: flex;
+        gap: 0.75rem;
         align-items: center;
-        margin-bottom: 2rem;
     }
 
-    h2 {
-        margin: 0;
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        font-style: italic;
-        font-weight: 500;
-        text-align: center;
-    }
-
-    button {
-        border: 2px solid var(--lavender);
-        border-radius: 0;
+    .controls button {
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        padding: 0;
         background: transparent;
-        color: inherit;
-        font: inherit;
-        cursor: pointer;
-    }
-
-    .calendar-header button {
-        width: 48px;
-        height: 48px;
+        border: 1px solid var(--lavender);
         color: var(--lavender);
+        font-size: 0.65rem;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
     }
 
-    .weekdays,
-    .days {
+    .controls button:hover:not(:disabled) {
+        background: var(--lavender);
+        color: #000;
+    }
+
+    .controls button:disabled {
+        opacity: 0.25;
+        cursor: not-allowed;
+    }
+
+    /* ── Select ── */
+
+    select {
+        height: 32px;
+        padding: 0 0.75rem;
+        background: transparent;
+        border: 1px solid transparent;
+        color: var(--lavender);
+        font-family: monospace;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        border-radius: 0;
+        transition: border-color 0.2s;
+    }
+
+    select:hover,
+    select:focus {
+        border-color: var(--lavender);
+        outline: none;
+    }
+
+    /* ── Days Grid ── */
+
+    .days-grid {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        gap: 6px;
-    }
-
-    .weekdays {
-        margin-bottom: 6px;
-        color: var(--lavender);
-        font-family: system-ui, sans-serif;
-        font-size: 0.6rem;
-        letter-spacing: 0.1em;
+        gap: 4px;
         text-align: center;
     }
 
-    .days button {
-        aspect-ratio: 1;
-        border-width: 1px;
+    .days-grid > span {
+        padding: 0.5rem 0;
+        opacity: 0.5;
+        font-size: 0.65rem;
     }
 
-    .days button.empty {
+    .days-grid > button {
+        aspect-ratio: 1;
+        display: grid;
+        place-items: center;
+        background: transparent;
+        border: none;
+        color: var(--lavender);
+        font-family: monospace;
+        font-size: 0.75rem;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: background 0.15s, color 0.15s;
+    }
+
+    .days-grid > button:hover:not(:disabled):not(.empty) {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .days-grid > button.selected {
+        background: var(--lavender);
+        color: #000;
+        font-weight: 700;
+    }
+
+    .days-grid > button:disabled:not(.empty) {
+        opacity: 0.2;
+        cursor: not-allowed;
+    }
+
+    .days-grid > button.empty {
         visibility: hidden;
     }
 
-    .days button.selected,
-    .times button.selected {
-        outline: 2px solid var(--lavender);
-        outline-offset: 3px;
-    }
+    /* ── Time Grid ── */
 
-    .days button:disabled:not(.empty),
-    .times button:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-    }
-
-    .time-header {
-        padding-bottom: 2rem;
-        border-bottom: 2px solid var(--lavender);
-    }
-
-    .time-header h2 {
-        margin-top: 1rem;
-        text-align: left;
-    }
-
-    .legend {
-        display: flex;
-        justify-content: space-between;
-        margin: 1rem 0;
-        color: var(--lavender);
-        font-family: system-ui, sans-serif;
-        font-size: 0.65rem;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-    }
-
-    .times {
+    .time-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        max-height: 380px;
-        margin-bottom: 2rem;
-        padding: 4px;
+        grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+        gap: 4px;
+        max-height: 280px;
         overflow-y: auto;
+        margin-bottom: 1.5rem;
+        scrollbar-width: thin;
+        scrollbar-color: var(--lavender) transparent;
     }
 
-    .times button {
-        padding: 0.8rem 0.25rem;
-        font-family: system-ui, sans-serif;
-        font-size: 0.8rem;
+    .time-btn {
+        height: 36px;
+        display: grid;
+        place-items: center;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--lavender);
+        font-family: monospace;
+        font-size: 0.7rem;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background 0.15s, color 0.15s, border-color 0.15s;
     }
 
-    .times button.booked {
-        text-decoration: line-through;
+    .time-btn:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--lavender);
     }
 
-    #confirm-booking {
-        width: 100%;
-        padding: 1rem;
-        font-family: system-ui, sans-serif;
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-    }
-
-    #confirm-booking:not(:disabled):hover {
+    .time-btn.selected {
         background: var(--lavender);
+        color: #000;
+        border-color: var(--lavender);
     }
 
-    #confirm-booking:disabled {
+    .time-btn:disabled {
+        opacity: 0.15;
+        cursor: not-allowed;
+    }
+
+    .time-btn.booked {
+        text-decoration: line-through;
+        opacity: 0.2;
+        pointer-events: none;
+    }
+
+    /* ── Footer ── */
+
+    footer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: auto;
+    }
+
+    .confirm-btn {
+        width: 100%;
+        height: 44px;
+        background: var(--lavender);
+        border: 1px solid var(--lavender);
+        color: #000;
+        font-family: monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: opacity 0.2s;
+    }
+
+    .confirm-btn:hover:not(:disabled) {
+        opacity: 0.85;
+    }
+
+    .confirm-btn:disabled {
         opacity: 0.3;
         cursor: not-allowed;
     }
 
-    #booking-status {
-        min-height: 1rem;
-        margin: 1rem 0 0;
-        color: var(--lavender);
-        font-family: system-ui, sans-serif;
+    #booking-status:not(:empty) {
+        text-align: center;
+        padding-bottom: 0.25rem;
         font-size: 0.7rem;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
+        opacity: 0.8;
+    }
+</style>
+
+<style is:global>
+    #days-grid > button {
+        aspect-ratio: 1;
+        width: 100%;
+        display: grid;
+        place-items: center;
+        background: transparent;
+        border: none;
+        color: var(--lavender);
+        font-family: monospace;
+        font-size: 0.75rem;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: background 0.15s, color 0.15s;
     }
 
-    @media (max-width: 800px) {
-        .booking-grid {
-            grid-template-columns: 1fr;
-        }
+    #days-grid > button:hover:not(:disabled):not(.empty) {
+        background: rgba(255, 255, 255, 0.08);
     }
 
-    @media (max-width: 480px) {
-        .calendar-panel,
-        .time-panel {
-            padding: 1rem;
-        }
+    #days-grid > button.selected {
+        background: var(--lavender);
+        color: #000;
+        font-weight: 700;
+    }
 
-        .weekdays,
-        .days {
-            gap: 3px;
-        }
+    #days-grid > button:disabled:not(.empty) {
+        opacity: 0.2;
+        cursor: not-allowed;
+    }
 
-        .times {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    #days-grid > button.empty {
+        visibility: hidden;
+    }
+</style>
+
+<style is:global>
+    #days-grid > button {
+        aspect-ratio: 1;
+        width: 100%;
+        display: grid;
+        place-items: center;
+        background: transparent;
+        border: none;
+        color: var(--lavender);
+        font-family: monospace;
+        font-size: 0.75rem;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: background 0.15s, color 0.15s;
+        position: relative;
+    }
+
+    #days-grid > button:hover:not(:disabled):not(.empty) {
+        background: rgba(255, 255, 255, 1);
+    }
+
+    #days-grid > button.selected {
+        background: var(--lavender);
+        color: #000;
+        font-weight: 700;
+    }
+
+    #days-grid > button:disabled:not(.empty) {
+        opacity: 0.5;
+        cursor: not-allowed;
+        color: var(--lavender);
+    }
+
+    #days-grid > button:disabled:not(.empty)::before {
+        content: "";
+        position: absolute;
+        inset: 20%;
+        border: 1px solid var(--lavender);
+        opacity: 0.5;
+        border-radius: 0;
+        transform: rotate(45deg);
+        pointer-events: none;
+    }
+
+    #days-grid > button:disabled:not(.empty)::after {
+        content: "";
+        position: absolute;
+        width: 70%;
+        height: 1px;
+        background: var(--lavender);
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    #days-grid > button.empty {
+        visibility: hidden;
     }
 </style>
 
 <script>
     import { supabase } from "../db/supabase";
 
-    const monthLabel = document.querySelector<HTMLElement>("#month-label")!;
-    const selectedDateLabel = document.querySelector<HTMLElement>("#selected-date")!;
-    const status = document.querySelector<HTMLElement>("#booking-status")!;
-    const confirm = document.querySelector<HTMLButtonElement>("#confirm-booking")!;
-    const dayButtons = [...document.querySelectorAll<HTMLButtonElement>(".days button")];
-    const timeButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-time]")];
+    function initCalendar() {
+        const form = document.querySelector("#booking-form");
+        if (!(form instanceof HTMLFormElement) || form.dataset.ready) return;
+        form.dataset.ready = "true";
 
-    const today = new Date();
-    let displayedMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    let selectedDate = formatDate(today);
-    let selectedTime = "";
+        const els = {
+            month: form.querySelector("#month-label")!,
+            status: form.querySelector("#booking-status")!,
+            confirm: form.querySelector("#confirm-booking") as HTMLButtonElement,
+            duration: form.querySelector("#booking-duration") as HTMLSelectElement,
+            prev: form.querySelector("#prev-month") as HTMLButtonElement,
+            next: form.querySelector("#next-month") as HTMLButtonElement,
+            days: form.querySelector("#days-grid")!,
+            times: [...form.querySelectorAll("[data-time]")] as HTMLButtonElement[],
+        };
 
-    function formatDate(date: Date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
+        const today = new Date();
+        const todayStr = formatDate(today);
+        let currMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        let activeDate = todayStr;
+        let activeTime = "";
+        let booked = new Set<string>();
+        let dayBtns: HTMLButtonElement[] = [];
 
-        return `${year}-${month}-${day}`;
-    }
-
-    function renderCalendar() {
-        const year = displayedMonth.getFullYear();
-        const month = displayedMonth.getMonth();
-        const offset = (new Date(year, month, 1).getDay() + 6) % 7;
-        const totalDays = new Date(year, month + 1, 0).getDate();
-
-        monthLabel.textContent = displayedMonth.toLocaleDateString("en-FI", {
-            month: "long",
-            year: "numeric"
-        });
-
-        dayButtons.forEach((button, index) => {
-            const day = index - offset + 1;
-            const empty = day < 1 || day > totalDays;
-
-            button.className = empty ? "empty" : "";
-            button.textContent = empty ? "" : String(day);
-            button.disabled = empty;
-
-            if (empty) return;
-
-            const date = new Date(year, month, day);
-            const value = formatDate(date);
-
-            button.dataset.date = value;
-            button.disabled = value < formatDate(today);
-            button.classList.toggle("selected", value === selectedDate);
-        });
-    }
-
-    async function loadTimes() {
-        selectedTime = "";
-        confirm.disabled = true;
-        status.textContent = "";
-
-        selectedDateLabel.textContent = new Date(
-            `${selectedDate}T12:00:00`
-        ).toLocaleDateString("en-FI", {
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-        });
-
-        const { data, error } = await supabase
-            .from("bookings")
-            .select("time")
-            .eq("date", selectedDate);
-
-        if (error) {
-            status.textContent = "Unable to load times";
-            return;
+        function formatDate(d: Date) {
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
         }
 
-        const booked = new Set(data.map(({ time }) => time.slice(0, 5)));
-        const now = new Date();
-        const currentMinutes = now.getHours() * 60 + now.getMinutes();
-        const isToday = selectedDate === formatDate(now);
+        function renderMonth() {
+            const y = currMonth.getFullYear();
+            const m = currMonth.getMonth();
+            const offset = (new Date(y, m, 1).getDay() + 6) % 7;
+            const total = new Date(y, m + 1, 0).getDate();
 
-        timeButtons.forEach((button) => {
-            const time = button.dataset.time!;
-            const [hours, minutes] = time.split(":").map(Number);
-            const past = isToday && hours * 60 + minutes <= currentMinutes;
-            const isBooked = booked.has(time);
+            els.month.textContent = currMonth.toLocaleDateString("en-US", {
+                month: "short",
+                year: "numeric",
+            });
 
-            button.className = isBooked ? "booked" : "";
-            button.disabled = past || isBooked;
+            els.prev.disabled =
+                currMonth.getTime() ===
+                new Date(today.getFullYear(), today.getMonth(), 1).getTime();
+
+            dayBtns.forEach((b) => b.remove());
+            dayBtns = [];
+
+            for (let i = 0; i < 42; i++) {
+                const day = i - offset + 1;
+                const btn = document.createElement("button");
+                btn.type = "button";
+
+                if (day < 1 || day > total) {
+                    btn.className = "empty";
+                    btn.disabled = true;
+                } else {
+                    const val = formatDate(new Date(y, m, day));
+                    btn.textContent = String(day);
+                    btn.disabled = val < todayStr;
+                    if (val === activeDate) btn.classList.add("selected");
+
+                    btn.addEventListener("click", () => {
+                        activeDate = val;
+                        renderMonth();
+                        loadBookings();
+                    });
+                }
+
+                dayBtns.push(btn);
+                els.days.appendChild(btn);
+            }
+        }
+
+        function updateTimes() {
+            const slots = Number(els.duration.value) / 30;
+            const minsNow = today.getHours() * 60 + today.getMinutes();
+            const isToday = activeDate === todayStr;
+
+            els.times.forEach((btn, i) => {
+                const [h, m] = btn.dataset.time!.split(":").map(Number);
+                const range = els.times.slice(i, i + slots);
+                btn.disabled =
+                    (isToday && h * 60 + m <= minsNow) ||
+                    range.length < slots ||
+                    range.some((b) => booked.has(b.dataset.time!));
+
+                btn.classList.remove("selected");
+                btn.classList.toggle("booked", booked.has(btn.dataset.time!));
+            });
+
+            activeTime = "";
+            els.confirm.disabled = true;
+        }
+
+        async function loadBookings() {
+            els.status.textContent = "";
+            const { data, error } = await supabase
+                .from("bookings")
+                .select("time")
+                .eq("date", activeDate);
+
+            if (error) {
+                els.status.textContent = "Error loading times";
+                return;
+            }
+
+            booked = new Set((data || []).map((d) => d.time.slice(0, 5)));
+            updateTimes();
+        }
+
+        els.times.forEach((btn) =>
+            btn.addEventListener("click", () => {
+                if (btn.disabled) return;
+                els.times.forEach((b) => b.classList.remove("selected"));
+                btn.classList.add("selected");
+                activeTime = btn.dataset.time!;
+                els.confirm.disabled = false;
+            })
+        );
+
+        els.duration.addEventListener("change", updateTimes);
+
+        els.prev.addEventListener("click", () => {
+            currMonth = new Date(
+                currMonth.getFullYear(),
+                currMonth.getMonth() - 1,
+                1
+            );
+            activeDate =
+                formatDate(currMonth) < todayStr
+                    ? todayStr
+                    : formatDate(currMonth);
+            renderMonth();
+            loadBookings();
         });
+
+        els.next.addEventListener("click", () => {
+            currMonth = new Date(
+                currMonth.getFullYear(),
+                currMonth.getMonth() + 1,
+                1
+            );
+            activeDate = formatDate(currMonth);
+            renderMonth();
+            loadBookings();
+        });
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            if (!activeTime) return;
+
+            els.confirm.disabled = true;
+            els.status.textContent = "Booking...";
+
+            const {
+                data: { session },
+            } = await supabase.auth.getSession();
+
+            if (!session) {
+                els.status.textContent = "Login required";
+                return;
+            }
+
+            const slots = Number(els.duration.value) / 30;
+            const startIdx = els.times.findIndex(
+                (b) => b.dataset.time === activeTime
+            );
+            const rows = els.times
+                .slice(startIdx, startIdx + slots)
+                .map((b) => ({
+                    date: activeDate,
+                    time: b.dataset.time,
+                    user_id: session.user.id,
+                }));
+
+            const { error } = await supabase.from("bookings").insert(rows);
+
+            if (error) {
+                await loadBookings();
+                els.status.textContent =
+                    error.code === "23505" ? "Slot taken" : "Booking failed";
+                return;
+            }
+
+            els.status.textContent = "Confirmed";
+            setTimeout(() => (window.location.href = "/account"), 1200);
+        });
+
+        renderMonth();
+        loadBookings();
     }
 
-    dayButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            selectedDate = button.dataset.date!;
-            renderCalendar();
-            loadTimes();
-        });
-    });
-
-    timeButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            timeButtons.forEach((item) => item.classList.remove("selected"));
-            button.classList.add("selected");
-            selectedTime = button.dataset.time!;
-            confirm.disabled = false;
-        });
-    });
-
-    document.querySelector("#previous-month")!.addEventListener("click", () => {
-        displayedMonth = new Date(
-            displayedMonth.getFullYear(),
-            displayedMonth.getMonth() - 1,
-            1
-        );
-        renderCalendar();
-    });
-
-    document.querySelector("#next-month")!.addEventListener("click", () => {
-        displayedMonth = new Date(
-            displayedMonth.getFullYear(),
-            displayedMonth.getMonth() + 1,
-            1
-        );
-        renderCalendar();
-    });
-
-    confirm.addEventListener("click", async () => {
-        confirm.disabled = true;
-
-        const { error } = await supabase
-            .from("bookings")
-            .insert({ date: selectedDate, time: selectedTime });
-
-        await loadTimes();
-
-        status.textContent = !error
-            ? "Booking confirmed"
-            : error.code === "23505"
-                ? "This time is already booked"
-                : "Unable to complete booking";
-    });
-
-    renderCalendar();
-    loadTimes();
+    initCalendar();
+    document.addEventListener("astro:page-load", initCalendar);
 </script>
