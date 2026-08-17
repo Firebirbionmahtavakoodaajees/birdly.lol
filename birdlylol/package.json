@@ -15,7 +15,6 @@
     "@astrojs/sitemap": "^3.7.3",
     "@supabase/supabase-js": "^2.112.3",
     "astro": "^7.2.0",
-    "photoswipe": "^5.4.4",
-    "vercel": "^54.17.3"
+    "photoswipe": "^5.4.4"
   }
 }
