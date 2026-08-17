@@ -1,0 +1,20 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PhoneLogin from "../components/PhoneLogin.astro";
+import YourBookings from "../components/YourBookings.astro";
+---
+
+<Layout title="Account | Birdly">
+    <section class="section">
+        <div class="container">
+            <span class="section-label">01 — Account</span>
+            <h1>Account</h1>
+
+            <div id="booking-area" hidden>
+                <YourBookings />
+            </div>
+
+            <PhoneLogin />
+        </div>
+    </section>
+</Layout>

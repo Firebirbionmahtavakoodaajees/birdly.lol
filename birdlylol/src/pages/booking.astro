@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import PhoneLogin from "../components/PhoneLogin.astro";
 
 const times = Array.from({ length: 48 }, (_, index) =>
     `${String(Math.floor(index / 2)).padStart(2, "0")}:${index % 2 ? "30" : "00"}`
@@ -8,12 +9,9 @@ const times = Array.from({ length: 48 }, (_, index) =>
 const durations = Array.from({ length: 20 }, (_, index) => {
     const minutes = (index + 1) * 30;
     const hours = minutes / 60;
-
     return {
         minutes,
-        label: minutes === 30
-            ? "30 minutes"
-            : `${hours} hour${hours === 1 ? "" : "s"}`
+        label: minutes === 30 ? "30 minutes" : `${hours} hour${hours === 1 ? "" : "s"}`
     };
 });
 ---
@@ -22,39 +20,36 @@ const durations = Array.from({ length: 20 }, (_, index) => {
     <section class="section">
         <div class="container">
             <span class="section-label">02 — Client Booking</span>
+            <h1>Booking</h1>
 
-            <div class="title-row">
-                <h1>Booking</h1>
-
-                <div class="geometry" aria-hidden="true">
-                    <span class="square"></span>
-                    <span class="diamond"></span>
-                    <span class="triangle"></span>
-                    <span class="block"></span>
-                </div>
-            </div>
-
-            <p class="intro">We're available 24/7.</p>
-
-            <div class="booking-layout">
+            <div id="booking-area" class="booking-layout" hidden>
                 <form id="booking-form">
                     <span class="panel-number">01</span>
 
-                    <div class="fields">
-                        <label class="date-field">
-                            Date
-                            <input id="booking-date" type="date" required />
-                        </label>
+                    <div class="calendar-panel">
+                        <header class="calendar-header">
+                            <button id="previous-month" type="button" aria-label="Previous month">←</button>
+                            <h2 id="month-label"></h2>
+                            <button id="next-month" type="button" aria-label="Next month">→</button>
+                        </header>
 
-                        <label>
+                        <div class="weekdays">
+                            <span>MON</span><span>TUE</span><span>WED</span><span>THU</span>
+                            <span>FRI</span><span>SAT</span><span>SUN</span>
+                        </div>
+
+                        <div class="days">
+                            {Array.from({ length: 42 }, () => <button type="button" disabled></button>)}
+                        </div>
+                    </div>
+
+                    <div class="fields">
+                        <label class="time-field">
                             Start time
                             <select id="booking-time" required>
                                 <option value="">Select a time</option>
-
                                 {times.map((time) => (
-                                        <option value={time} data-time={time}>
-                                            {time}
-                                        </option>
+                                        <option value={time} data-time={time}>{time}</option>
                                 ))}
                             </select>
                         </label>
@@ -69,111 +64,44 @@ const durations = Array.from({ length: 20 }, (_, index) => {
                         </label>
                     </div>
 
-                    <button id="confirm-booking" type="submit">
-                        Confirm booking
-                    </button>
+                    <p class="selected-date" id="selected-date"></p>
 
+                    <button id="confirm-booking" type="submit" disabled>Confirm booking</button>
                     <p id="booking-status" aria-live="polite"></p>
                 </form>
-
-                <section class="booked-panel">
-                    <span class="panel-number">02</span>
-                    <span class="panel-label">Already booked</span>
-                    <h2 id="selected-date">Select a date</h2>
-
-                    <div id="booked-times">
-                        <span class="empty">No date selected</span>
-                    </div>
-                </section>
             </div>
+
+            <p id="login-prompt" class="login-prompt">Please log in to book.</p>
+            <PhoneLogin />
         </div>
     </section>
 </Layout>
 
 <style>
-    .title-row {
-        display: flex;
-        align-items: end;
-        justify-content: space-between;
-        gap: 2rem;
-        padding-bottom: 2rem;
+    [hidden] { display: none !important; }
+
+    .calendar-panel {
+        max-width: 340px;
+        margin: 0 auto;
     }
 
-    .title-row h1 {
-        margin-bottom: 0;
-    }
-
-    .geometry {
-        position: relative;
-        width: 120px;
-        height: 80px;
-        flex: none;
-    }
-
-    .geometry span {
-        position: absolute;
-        display: block;
-    }
-
-    .geometry .square {
-        bottom: 0;
-        left: 0;
-        width: 38px;
-        height: 38px;
-        border: 2px solid var(--lavender);
-    }
-
-    .geometry .diamond {
-        top: 6px;
-        left: 42px;
-        width: 30px;
-        height: 30px;
-        border: 2px solid var(--lavender);
-        transform: rotate(45deg);
-    }
-
-    .geometry .triangle {
-        right: 0;
-        bottom: 0;
-        width: 0;
-        height: 0;
-        border-right: 22px solid transparent;
-        border-bottom: 42px solid var(--lavender);
-        border-left: 22px solid transparent;
-    }
-
-    .geometry .block {
-        top: 0;
-        left: 0;
-        width: 26px;
-        height: 14px;
-        background: var(--lavender);
-    }
-
-    .intro {
-        max-width: 48rem;
-        margin: 2rem 0 0;
+    .login-prompt {
+        margin-top: 2rem;
         color: var(--lavender);
         font-family: system-ui, sans-serif;
-        font-size: 1.1rem;
-        font-weight: 600;
+        font-size: 0.85rem;
         letter-spacing: 0.15em;
-        line-height: 1.7;
         text-transform: uppercase;
     }
 
-    .booking-layout {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-top: 3rem;
-    }
+    .booking-layout { margin-top: 3rem; }
 
-    #booking-form,
-    .booked-panel {
+    #booking-form {
         position: relative;
         border: 2px solid var(--lavender);
         padding: 3rem 2rem 2rem;
+        display: grid;
+        gap: 12px;
     }
 
     .panel-number {
@@ -191,18 +119,63 @@ const durations = Array.from({ length: 20 }, (_, index) => {
         font-size: 0.65rem;
     }
 
+    .calendar-header {
+        display: grid;
+        grid-template-columns: 48px 1fr 48px;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .calendar-header h2 {
+        margin: 0;
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-style: italic;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .calendar-header button {
+        width: 48px;
+        height: 48px;
+        color: var(--lavender);
+    }
+
+    .weekdays, .days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+    }
+
+    .weekdays {
+        margin-bottom: 6px;
+        color: var(--lavender);
+        font-family: system-ui, sans-serif;
+        font-size: 0.6rem;
+        letter-spacing: 0.1em;
+        text-align: center;
+    }
+
+    .days button {
+        aspect-ratio: 1;
+        border: 1px solid var(--lavender);
+        border-radius: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+    }
+
+    .days button.empty { visibility: hidden; }
+    .days button.selected { outline: 2px solid var(--lavender); outline-offset: 3px; }
+    .days button:disabled:not(.empty) { opacity: 0.3; cursor: not-allowed; }
+
     .fields {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
     }
 
-    .date-field {
-        grid-column: 1 / -1;
-    }
-
-    label,
-    .panel-label {
+    label {
         display: grid;
         gap: 0.75rem;
         color: var(--lavender);
@@ -213,9 +186,7 @@ const durations = Array.from({ length: 20 }, (_, index) => {
         text-transform: uppercase;
     }
 
-    input,
-    select,
-    button {
+    select, button {
         width: 100%;
         min-height: 52px;
         border: 2px solid var(--lavender);
@@ -225,15 +196,12 @@ const durations = Array.from({ length: 20 }, (_, index) => {
         font: inherit;
     }
 
-    input,
     select {
         padding: 0 1rem;
         color: var(--lavender);
-        accent-color: var(--lavender);
     }
 
     button {
-        margin-top: 12px;
         padding: 0 1rem;
         font-family: system-ui, sans-serif;
         font-size: 0.75rem;
@@ -243,18 +211,21 @@ const durations = Array.from({ length: 20 }, (_, index) => {
         cursor: pointer;
     }
 
-    button:hover:not(:disabled) {
-        background: var(--lavender);
-    }
+    button:hover:not(:disabled) { background: var(--lavender); }
+    button:disabled { opacity: 0.35; cursor: not-allowed; }
 
-    button:disabled {
-        opacity: 0.35;
-        cursor: not-allowed;
+    .selected-date {
+        margin: 0;
+        color: var(--lavender);
+        font-family: system-ui, sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
     }
 
     #booking-status {
         min-height: 1rem;
-        margin: 1rem 0 0;
+        margin: 0;
         color: var(--lavender);
         font-family: system-ui, sans-serif;
         font-size: 0.7rem;
@@ -262,72 +233,10 @@ const durations = Array.from({ length: 20 }, (_, index) => {
         text-transform: uppercase;
     }
 
-    .booked-panel h2 {
-        margin: 0.75rem 0 1.5rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 2px solid var(--lavender);
-        font-size: clamp(1.5rem, 3vw, 2.5rem);
-        font-style: italic;
-        font-weight: 500;
-    }
-
-    #booked-times {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 8px;
-    }
-
-    #booked-times span {
-        padding: 0.75rem 0.25rem;
-        border: 1px solid var(--lavender);
-        color: var(--lavender);
-        font-family: system-ui, sans-serif;
-        font-size: 0.75rem;
-        text-align: center;
-        text-decoration: line-through;
-    }
-
-    #booked-times .empty {
-        grid-column: 1 / -1;
-        border: 0;
-        text-align: left;
-        text-decoration: none;
-        opacity: 0.6;
-    }
-
-    @media (max-width: 800px) {
-        .booking-layout {
-            grid-template-columns: 1fr;
-        }
-    }
-
     @media (max-width: 500px) {
-        .title-row {
-            align-items: center;
-        }
-
-        .geometry {
-            width: 90px;
-            transform: scale(0.75);
-            transform-origin: right center;
-        }
-
-        #booking-form,
-        .booked-panel {
-            padding: 3rem 1rem 1rem;
-        }
-
-        .fields {
-            grid-template-columns: 1fr;
-        }
-
-        .date-field {
-            grid-column: auto;
-        }
-
-        #booked-times {
-            grid-template-columns: repeat(3, 1fr);
-        }
+        #booking-form { padding: 3rem 1rem 1rem; }
+        .fields { grid-template-columns: 1fr; }
+        .weekdays, .days { gap: 3px; }
     }
 </style>
 
@@ -337,148 +246,105 @@ const durations = Array.from({ length: 20 }, (_, index) => {
     function initBooking() {
         const form = document.querySelector<HTMLFormElement>("#booking-form");
         if (!form || form.dataset.ready) return;
-
         form.dataset.ready = "true";
 
-        const dateInput =
-            document.querySelector<HTMLInputElement>("#booking-date")!;
-        const timeInput =
-            document.querySelector<HTMLSelectElement>("#booking-time")!;
-        const durationInput =
-            document.querySelector<HTMLSelectElement>("#booking-duration")!;
-        const confirm =
-            document.querySelector<HTMLButtonElement>("#confirm-booking")!;
-        const status =
-            document.querySelector<HTMLElement>("#booking-status")!;
-        const dateLabel =
-            document.querySelector<HTMLElement>("#selected-date")!;
-        const bookedList =
-            document.querySelector<HTMLElement>("#booked-times")!;
-        const options = [
-            ...timeInput.querySelectorAll<HTMLOptionElement>("[data-time]")
-        ];
+        const monthLabel = document.querySelector<HTMLElement>("#month-label")!;
+        const dayButtons = [...document.querySelectorAll<HTMLButtonElement>(".days button")];
+        const timeInput = document.querySelector<HTMLSelectElement>("#booking-time")!;
+        const durationInput = document.querySelector<HTMLSelectElement>("#booking-duration")!;
+        const confirm = document.querySelector<HTMLButtonElement>("#confirm-booking")!;
+        const status = document.querySelector<HTMLElement>("#booking-status")!;
+        const selectedDateLabel = document.querySelector<HTMLElement>("#selected-date")!;
+        const options = [...timeInput.querySelectorAll<HTMLOptionElement>("[data-time]")];
 
+        const today = new Date();
+        let displayedMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        let selectedDate = formatDate(today);
         let bookedSet = new Set<string>();
 
         function formatDate(date: Date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, "0");
-            const day = String(date.getDate()).padStart(2, "0");
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+        }
 
-            return `${year}-${month}-${day}`;
+        function renderCalendar() {
+            const year = displayedMonth.getFullYear();
+            const month = displayedMonth.getMonth();
+            const offset = (new Date(year, month, 1).getDay() + 6) % 7;
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            monthLabel.textContent = displayedMonth.toLocaleDateString("en-FI", {
+                month: "long",
+                year: "numeric"
+            });
+
+            dayButtons.forEach((button, index) => {
+                const day = index - offset + 1;
+                const empty = day < 1 || day > totalDays;
+                button.className = empty ? "empty" : "";
+                button.textContent = empty ? "" : String(day);
+                button.disabled = empty;
+                if (empty) return;
+
+                const value = formatDate(new Date(year, month, day));
+                button.dataset.date = value;
+                button.disabled = value < formatDate(today);
+                button.classList.toggle("selected", value === selectedDate);
+            });
         }
 
         function updateOptions() {
             const slotCount = Number(durationInput.value) / 30;
             const now = new Date();
-            const today = formatDate(now);
             const currentMinutes = now.getHours() * 60 + now.getMinutes();
+            const isToday = selectedDate === formatDate(now);
 
             options.forEach((option, index) => {
-                const time = option.dataset.time!;
-                const [hours, minutes] = time.split(":").map(Number);
-
-                const passed =
-                    dateInput.value === today &&
-                    hours * 60 + minutes <= currentMinutes;
-
+                const [h, m] = option.dataset.time!.split(":").map(Number);
+                const passed = isToday && h * 60 + m <= currentMinutes;
                 const range = options.slice(index, index + slotCount);
                 const unavailable =
                     range.length < slotCount ||
-                    range.some((slot) =>
-                        bookedSet.has(slot.dataset.time!)
-                    );
+                    range.some((slot) => bookedSet.has(slot.dataset.time!));
 
                 option.disabled = passed || unavailable;
-
-                option.textContent = bookedSet.has(time)
-                    ? `${time} — Booked`
-                    : passed
-                        ? `${time} — Passed`
-                        : unavailable
-                            ? `${time} — Unavailable`
-                            : time;
             });
+
+            if (timeInput.selectedOptions[0]?.disabled) timeInput.value = "";
+            confirm.disabled = !timeInput.value;
         }
 
         async function loadBookings() {
             status.textContent = "";
             timeInput.value = "";
+            confirm.disabled = true;
 
-            const selectedDate = dateInput.value;
-
-            dateLabel.textContent = new Date(
-                `${selectedDate}T12:00:00`
-            ).toLocaleDateString("en-FI", {
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-            });
+            selectedDateLabel.textContent = new Date(`${selectedDate}T12:00:00`)
+                .toLocaleDateString("en-FI", { day: "numeric", month: "long", year: "numeric" });
 
             const { data, error } = await supabase
                 .from("bookings")
                 .select("time")
-                .eq("date", selectedDate)
-                .order("time");
+                .eq("date", selectedDate);
 
             if (error) {
-                status.textContent = "Unable to load bookings";
+                status.textContent = "Unable to load times";
                 return;
             }
 
-            const booked = data.map(({ time }) => time.slice(0, 5));
-            bookedSet = new Set(booked);
-
+            bookedSet = new Set(data.map(({ time }) => time.slice(0, 5)));
             updateOptions();
-            bookedList.replaceChildren();
-
-            if (!booked.length) {
-                const empty = document.createElement("span");
-                empty.className = "empty";
-                empty.textContent = "No booked times";
-                bookedList.append(empty);
-                return;
-            }
-
-            booked.forEach((time) => {
-                const item = document.createElement("span");
-                item.textContent = time;
-                bookedList.append(item);
-            });
         }
 
-        form.addEventListener("submit", async (event) => {
-            event.preventDefault();
+        dayButtons.forEach((button) =>
+            button.addEventListener("click", () => {
+                selectedDate = button.dataset.date!;
+                renderCalendar();
+                loadBookings();
+            })
+        );
 
-            if (!dateInput.value || !timeInput.value) return;
-
-            confirm.disabled = true;
-            status.textContent = "Booking...";
-
-            const slotCount = Number(durationInput.value) / 30;
-            const startIndex = options.findIndex(
-                (option) => option.value === timeInput.value
-            );
-
-            const booking = options
-                .slice(startIndex, startIndex + slotCount)
-                .map((option) => ({
-                    date: dateInput.value,
-                    time: option.value
-                }));
-
-            const { error } = await supabase
-                .from("bookings")
-                .insert(booking);
-
-            await loadBookings();
-            confirm.disabled = false;
-
-            status.textContent = !error
-                ? "Booking confirmed"
-                : error.code === "23505"
-                    ? "This time is already booked"
-                    : "Unable to complete booking";
+        timeInput.addEventListener("change", () => {
+            confirm.disabled = !timeInput.value;
         });
 
         durationInput.addEventListener("change", () => {
@@ -486,15 +352,64 @@ const durations = Array.from({ length: 20 }, (_, index) => {
             updateOptions();
         });
 
-        const today = formatDate(new Date());
+        document.querySelector("#previous-month")!.addEventListener("click", () => {
+            displayedMonth = new Date(displayedMonth.getFullYear(), displayedMonth.getMonth() - 1, 1);
+            renderCalendar();
+        });
 
-        dateInput.min = today;
-        dateInput.value = today;
-        dateInput.addEventListener("change", loadBookings);
+        document.querySelector("#next-month")!.addEventListener("click", () => {
+            displayedMonth = new Date(displayedMonth.getFullYear(), displayedMonth.getMonth() + 1, 1);
+            renderCalendar();
+        });
 
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            if (!timeInput.value) return;
+
+            confirm.disabled = true;
+            status.textContent = "Booking...";
+
+            const { data: { session } } = await supabase.auth.getSession();
+            const slotCount = Number(durationInput.value) / 30;
+            const startIndex = options.findIndex((o) => o.value === timeInput.value);
+
+            const booking = options
+                .slice(startIndex, startIndex + slotCount)
+                .map((o) => ({
+                    date: selectedDate,
+                    time: o.value,
+                    // REPLACE: if your bookings table stores user_id, include it (or set via RLS default).
+                    user_id: session?.user?.id
+                }));
+
+            const { error } = await supabase.from("bookings").insert(booking);
+
+            if (error) {
+                status.textContent =
+                    error.code === "23505" ? "This time is already booked" : "Unable to complete booking";
+                confirm.disabled = false;
+                return;
+            }
+
+            window.location.href = "/account";
+        });
+
+        renderCalendar();
         loadBookings();
     }
 
     initBooking();
     document.addEventListener("astro:page-load", initBooking);
+
+    // Login gate: hide booking, show prompt until authenticated.
+    const prompt = document.querySelector<HTMLElement>("#login-prompt");
+    const area = document.querySelector<HTMLElement>("#booking-area");
+
+    function gate(loggedIn: boolean) {
+        if (area) area.hidden = !loggedIn;
+        if (prompt) prompt.hidden = loggedIn;
+    }
+
+    supabase.auth.getSession().then(({ data }) => gate(Boolean(data.session)));
+    document.addEventListener("birdly:auth", ((e: CustomEvent) => gate(e.detail.loggedIn)) as EventListener);
 </script>

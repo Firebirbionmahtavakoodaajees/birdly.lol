@@ -1,0 +1,314 @@
+<section class="phone-login" id="phone-login">
+    <span class="panel-number">01</span>
+    <span class="panel-label">Phone login</span>
+
+    <form id="phone-form">
+        <label>
+            Phone number
+            <input
+                    id="phone-number"
+                    type="tel"
+                    inputmode="tel"
+                    autocomplete="tel"
+                    placeholder="+358451234567"
+                    required
+            />
+        </label>
+
+        <button id="send-code" type="submit">Send login code</button>
+    </form>
+
+    <form id="code-form" hidden>
+        <label>
+            Six-digit SMS code
+            <input
+                    id="login-code"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                    pattern="[0-9]{6}"
+                    maxlength="6"
+                    placeholder="123456"
+                    required
+            />
+        </label>
+
+        <div class="actions">
+            <button id="verify-code" type="submit">Verify code</button>
+            <button id="change-number" type="button">Change number</button>
+        </div>
+    </form>
+
+    <div id="account" hidden>
+        <p>Logged in as <strong id="account-phone"></strong></p>
+        <button id="log-out" type="button">Log out</button>
+    </div>
+
+    <p id="login-status" aria-live="polite"></p>
+</section>
+
+<style>
+    [hidden] {
+        display: none !important;
+    }
+
+    .phone-login {
+        position: relative;
+        margin-top: 3rem;
+        padding: 3rem 2rem 2rem;
+        border: 2px solid var(--lavender);
+    }
+
+    .panel-number {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-bottom: 2px solid var(--lavender);
+        border-left: 2px solid var(--lavender);
+        color: var(--lavender);
+        font-family: system-ui, sans-serif;
+        font-size: 0.65rem;
+    }
+
+    .panel-label,
+    label {
+        display: grid;
+        gap: 0.75rem;
+        color: var(--lavender);
+        font-family: system-ui, sans-serif;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 1.5rem;
+    }
+
+    form > button,
+    .actions {
+        align-self: end;
+    }
+
+    .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    input,
+    button {
+        width: 100%;
+        min-height: 52px;
+        border: 2px solid var(--lavender);
+        border-radius: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+    }
+
+    input {
+        padding: 0 1rem;
+        color: var(--lavender);
+        accent-color: var(--lavender);
+    }
+
+    button {
+        padding: 0 1rem;
+        font-family: system-ui, sans-serif;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+
+    button:hover:not(:disabled) {
+        background: var(--lavender);
+    }
+
+    button:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
+
+    #account {
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    #account:not([hidden]) {
+        display: flex;
+    }
+
+    #account p {
+        margin: 0;
+    }
+
+    #account button {
+        width: auto;
+    }
+
+    #login-status {
+        min-height: 1rem;
+        margin: 1rem 0 0;
+        color: var(--lavender);
+        font-family: system-ui, sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+    }
+
+    @media (max-width: 600px) {
+        .phone-login {
+            padding: 3rem 1rem 1rem;
+        }
+
+        form {
+            grid-template-columns: 1fr;
+        }
+
+        #account:not([hidden]) {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        #account button {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+    import { supabase } from "../db/supabase";
+
+    function initPhoneLogin() {
+        const root = document.querySelector<HTMLElement>("#phone-login");
+        if (!root || root.dataset.ready) return;
+
+        root.dataset.ready = "true";
+
+        const phoneForm = root.querySelector<HTMLFormElement>("#phone-form")!;
+        const codeForm = root.querySelector<HTMLFormElement>("#code-form")!;
+        const phoneInput = root.querySelector<HTMLInputElement>("#phone-number")!;
+        const codeInput = root.querySelector<HTMLInputElement>("#login-code")!;
+        const sendButton = root.querySelector<HTMLButtonElement>("#send-code")!;
+        const verifyButton = root.querySelector<HTMLButtonElement>("#verify-code")!;
+        const changeButton = root.querySelector<HTMLButtonElement>("#change-number")!;
+        const account = root.querySelector<HTMLElement>("#account")!;
+        const accountPhone = root.querySelector<HTMLElement>("#account-phone")!;
+        const logoutButton = root.querySelector<HTMLButtonElement>("#log-out")!;
+        const status = root.querySelector<HTMLElement>("#login-status")!;
+        const bookingArea = document.querySelector<HTMLElement>("#booking-area");
+
+        let phone = "";
+
+        function showSession(session: any) {
+            const loggedIn = Boolean(session?.user);
+
+            phoneForm.hidden = loggedIn;
+            codeForm.hidden = true;
+            account.hidden = !loggedIn;
+
+            if (bookingArea) bookingArea.hidden = !loggedIn;
+
+            accountPhone.textContent = session?.user?.phone ?? "";
+
+            document.dispatchEvent(new CustomEvent("birdly:auth", {
+                detail: { loggedIn }
+            }));
+        }
+
+        phoneForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            phone = phoneInput.value.replace(/\s/g, "");
+
+            if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
+                status.textContent = "Use format +358451234567";
+                return;
+            }
+
+            sendButton.disabled = true;
+            status.textContent = "Sending code...";
+
+            const { error } = await supabase.auth.signInWithOtp({ phone });
+
+            sendButton.disabled = false;
+
+            if (error) {
+                status.textContent = error.message;
+                return;
+            }
+
+            phoneForm.hidden = true;
+            codeForm.hidden = false;
+            status.textContent = "Code sent";
+            codeInput.focus();
+        });
+
+        codeForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            verifyButton.disabled = true;
+            status.textContent = "Verifying...";
+
+            const { data, error } = await supabase.auth.verifyOtp({
+                phone,
+                token: codeInput.value.trim(),
+                type: "sms"
+            });
+
+            verifyButton.disabled = false;
+
+            if (error) {
+                status.textContent = error.message;
+                return;
+            }
+
+            status.textContent = "";
+            codeInput.value = "";
+            showSession(data.session);
+        });
+
+        changeButton.addEventListener("click", () => {
+            codeForm.hidden = true;
+            phoneForm.hidden = false;
+            codeInput.value = "";
+            status.textContent = "";
+            phoneInput.focus();
+        });
+
+        logoutButton.addEventListener("click", async () => {
+            await supabase.auth.signOut();
+            showSession(null);
+        });
+
+        supabase.auth.getSession().then(({ data }) => {
+            showSession(data.session);
+        });
+
+        const { data: listener } = supabase.auth.onAuthStateChange(
+            (_event, session) => showSession(session)
+        );
+
+        document.addEventListener(
+            "astro:before-swap",
+            () => listener.subscription.unsubscribe(),
+            { once: true }
+        );
+    }
+
+    initPhoneLogin();
+    document.addEventListener("astro:page-load", initPhoneLogin);
+</script>
