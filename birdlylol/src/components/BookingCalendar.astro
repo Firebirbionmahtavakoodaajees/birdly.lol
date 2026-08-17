@@ -289,42 +289,6 @@ const durations = Array.from({ length: 20 }, (_, i) => ({
         cursor: pointer;
         border-radius: 50%;
         transition: background 0.15s, color 0.15s;
-    }
-
-    #days-grid > button:hover:not(:disabled):not(.empty) {
-        background: rgba(255, 255, 255, 0.08);
-    }
-
-    #days-grid > button.selected {
-        background: var(--lavender);
-        color: #000;
-        font-weight: 700;
-    }
-
-    #days-grid > button:disabled:not(.empty) {
-        opacity: 0.2;
-        cursor: not-allowed;
-    }
-
-    #days-grid > button.empty {
-        visibility: hidden;
-    }
-</style>
-
-<style is:global>
-    #days-grid > button {
-        aspect-ratio: 1;
-        width: 100%;
-        display: grid;
-        place-items: center;
-        background: transparent;
-        border: none;
-        color: var(--lavender);
-        font-family: monospace;
-        font-size: 0.75rem;
-        cursor: pointer;
-        border-radius: 50%;
-        transition: background 0.15s, color 0.15s;
         position: relative;
     }
 
