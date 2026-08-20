@@ -1,7 +1,8 @@
 -- One notification per booking (not per 30-min slot).
 -- The calendar inserts every slot in a single statement, so a statement-level
 -- trigger with a transition table fires once and collapses the slots to a range.
--- REPLACE: <PROJECT_REF> and <SERVICE_ROLE_KEY>
+-- REPLACE: <SERVICE_ROLE_KEY> (Supabase → Settings → API → service_role; same
+-- value as the SUPABASE_SERVICE_ROLE_KEY env var in Vercel)
 
 create extension if not exists pg_net;
 
@@ -24,7 +25,7 @@ begin
         group by date, user_id
     loop
         perform net.http_post(
-            url := 'https://<PROJECT_REF>.supabase.co/functions/v1/booking-notify',
+            url := 'https://birdly.lol/api/booking-notify',
             headers := jsonb_build_object(
                 'Content-Type', 'application/json',
                 'Authorization', 'Bearer <SERVICE_ROLE_KEY>'
