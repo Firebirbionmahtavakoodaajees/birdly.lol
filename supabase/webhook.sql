@@ -1,12 +1,52 @@
--- Booking email webhook. Fires the booking-email function once per inserted slot.
+-- One notification per booking (not per 30-min slot).
+-- The calendar inserts every slot in a single statement, so a statement-level
+-- trigger with a transition table fires once and collapses the slots to a range.
 -- REPLACE: <PROJECT_REF> and <SERVICE_ROLE_KEY>
-create trigger booking_email
+
+create extension if not exists pg_net;
+
+create or replace function public.notify_booking()
+returns trigger
+language plpgsql
+security definer
+as $$
+declare
+    b record;
+begin
+    -- group by user+date so one statement covers separate ranges safely
+    for b in
+        select
+            date,
+            min(time) as start_at,
+            max(time) + interval '30 minutes' as end_at,
+            user_id
+        from new_rows
+        group by date, user_id
+    loop
+        perform net.http_post(
+            url := 'https://<PROJECT_REF>.supabase.co/functions/v1/booking-notify',
+            headers := jsonb_build_object(
+                'Content-Type', 'application/json',
+                'Authorization', 'Bearer <SERVICE_ROLE_KEY>'
+            ),
+            body := jsonb_build_object(
+                'date', b.date,
+                'start', b.start_at::text,
+                'end', b.end_at::text,
+                'user_id', b.user_id
+            )
+        );
+    end loop;
+
+    return null;
+end;
+$$;
+
+drop trigger if exists booking_email on public.bookings;
+drop trigger if exists booking_notify on public.bookings;
+
+create trigger booking_notify
 after insert on public.bookings
-for each row
-execute function supabase_functions.http_request(
-    'https://<PROJECT_REF>.supabase.co/functions/v1/booking-email',
-    'POST',
-    '{"Content-Type":"application/json","Authorization":"Bearer <SERVICE_ROLE_KEY>"}',
-    '{}',
-    '5000'
-);
+referencing new table as new_rows
+for each statement
+execute function public.notify_booking();
